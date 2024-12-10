@@ -1,3 +1,5 @@
 import styles from "./NewCardPage.module.css";
 
-export default function NewCardPage() {}
+export default function NewCardPage() {
+  return <></>;
+}
