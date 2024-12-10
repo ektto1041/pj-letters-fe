@@ -1,5 +1,5 @@
 import styles from "./CardPage.module.css";
 
 export default function CardPage() {
-  return <></>;
+  return <>CardPage</>;
 }
