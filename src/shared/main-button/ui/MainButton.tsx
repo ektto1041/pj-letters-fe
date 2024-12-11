@@ -4,12 +4,14 @@ import type { Color } from "@/shared";
 
 interface MainButtonProps {
   color: Color;
+  disabled?: boolean;
   children: ReactNode;
   onClick: () => void;
 }
 
 export default function MainButton({
   children,
+  disabled,
   color,
   onClick,
 }: MainButtonProps) {
@@ -21,6 +23,7 @@ export default function MainButton({
         text-md
       `}
       onClick={onClick}
+      disabled={disabled}
     >
       {children}
     </button>

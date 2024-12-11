@@ -3,6 +3,7 @@
   padding-bottom: 16px;
   border-radius: 8px;
   color: var(--color-gray-50);
+  transition: background-color 0.25s;
 }
 
 .primary {
@@ -11,4 +12,8 @@
 
 .secondary {
   background-color: var(--color-secondary);
+}
+
+.container:disabled {
+  background-color: var(--color-gray-600);
 }
