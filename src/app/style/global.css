@@ -78,6 +78,12 @@ button {
   cursor: pointer;
 }
 
+input {
+  border: none;
+  background: none;
+  outline: none;
+}
+
 img {
   pointer-events: none;
   user-select: none;
