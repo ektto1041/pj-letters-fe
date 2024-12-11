@@ -9,12 +9,14 @@ interface HeaderProps {
 export default function Header({ title, onClickBackButton }: HeaderProps) {
   return (
     <div className={styles.container}>
-      <button
-        className={styles["back-button-wrapper"]}
-        onClick={onClickBackButton}
-      >
-        <img src={ArrowBackImg} alt="ArrowBackImg" />
-      </button>
+      {onClickBackButton && (
+        <button
+          className={styles["back-button-wrapper"]}
+          onClick={onClickBackButton}
+        >
+          <img src={ArrowBackImg} alt="ArrowBackImg" />
+        </button>
+      )}
       <div className={`${styles.title} text-md`}>{title}</div>
     </div>
   );
