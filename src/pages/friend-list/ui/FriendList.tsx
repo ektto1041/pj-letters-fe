@@ -53,6 +53,33 @@ export default function FriendList() {
           {friends.map((friend, i) => (
             <FriendItem key={i} friend={friend} />
           ))}
+          {friends.map((friend, i) => (
+            <FriendItem key={i} friend={friend} />
+          ))}
+          {friends.map((friend, i) => (
+            <FriendItem key={i} friend={friend} />
+          ))}
+          {friends.map((friend, i) => (
+            <FriendItem key={i} friend={friend} />
+          ))}
+          {friends.map((friend, i) => (
+            <FriendItem key={i} friend={friend} />
+          ))}
+          {friends.map((friend, i) => (
+            <FriendItem key={i} friend={friend} />
+          ))}
+          {friends.map((friend, i) => (
+            <FriendItem key={i} friend={friend} />
+          ))}
+          {friends.map((friend, i) => (
+            <FriendItem key={i} friend={friend} />
+          ))}
+          {friends.map((friend, i) => (
+            <FriendItem key={i} friend={friend} />
+          ))}
+          {friends.map((friend, i) => (
+            <FriendItem key={i} friend={friend} />
+          ))}
         </div>
       </div>
     </div>
