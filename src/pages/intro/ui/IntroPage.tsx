@@ -6,9 +6,12 @@ import { ChangeEventHandler, useCallback, useMemo, useState } from "react";
 import EmailImg from "@assets/email.svg";
 import LockImg from "@assets/lock.svg";
 import { useNavigate } from "react-router-dom";
+import { User, useUserState } from "@/features";
 
 export default function IntroPage() {
   const navigate = useNavigate();
+
+  const { setUser } = useUserState();
 
   const [isLoginPhase, setLoginPhase] = useState(false);
   const [email, setEmail] = useState("");
@@ -20,6 +23,12 @@ export default function IntroPage() {
 
   const handleClickLogin = useCallback(() => {
     if (isLoginPhase) {
+      const newUser: User = {
+        userId: "1",
+        email: "a@a.com",
+        name: "Park",
+      };
+      setUser(newUser);
       navigate("/tree/1");
     } else {
       setLoginPhase(true);
