@@ -15,7 +15,7 @@
   left: calc(50% - 150vw);
   background-color: var(--color-gray-50);
   border-radius: 150vw;
-  transform: translateY(-20vh);
+  transform: translateY(-20dvh);
 }
 
 .header {
@@ -81,7 +81,7 @@
   position: relative;
   z-index: 1;
   width: 100%;
-  flex: 20vh 0 0;
+  flex: 20dvh 0 0;
   display: flex;
   flex-direction: column-reverse;
   padding: 16px;
