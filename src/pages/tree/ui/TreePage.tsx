@@ -4,13 +4,18 @@ import { Header } from "@/widgets";
 import TreeImg from "@assets/tree.svg";
 import { MainButton } from "@/shared";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { cardImgs, Letter } from "@/features";
+import { cardImgs, Letter, useUserState } from "@/features";
 import CircleArrowLImg from "@assets/circle-arrow-l.svg";
 import CircleArrowRImg from "@assets/circle-arrow-r.svg";
 
 export default function TreePage() {
   const { userId } = useParams();
   const navigate = useNavigate();
+  const { user } = useUserState();
+
+  const isMyTree = useMemo(() => {
+    return userId === user?.userId;
+  }, [userId, user]);
 
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
@@ -139,13 +144,13 @@ export default function TreePage() {
     navigate("/friend-list");
   }, []);
 
-  console.log(page);
+  const handleClickWrite = useCallback(() => {}, []);
 
   return (
     <div className={styles.container}>
       <div className={styles.ground} />
       <div className={styles.header}>
-        <Header title="나의 트리" />
+        <Header title={`${isMyTree ? "나의 트리" : `의 트리`}`} />
         <div className={styles["timer-wrapper"]}>
           <div className={`${styles.timer} text-sm`}>{timeLeftStr}</div>
         </div>
@@ -175,9 +180,15 @@ export default function TreePage() {
               </button>
             )}
           </div>
-          <MainButton color="primary" onClick={handleClickFriendList}>
-            친구 목록
-          </MainButton>
+          {isMyTree ? (
+            <MainButton color="primary" onClick={handleClickFriendList}>
+              친구 목록
+            </MainButton>
+          ) : (
+            <MainButton color="primary" onClick={handleClickWrite}>
+              글 남기기
+            </MainButton>
+          )}
         </div>
       </div>
     </div>
