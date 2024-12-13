@@ -147,7 +147,7 @@ export default function TreePage() {
       <div className={styles.header}>
         <Header title="나의 트리" />
         <div className={styles["timer-wrapper"]}>
-          <div className={styles.timer}>{timeLeftStr}</div>
+          <div className={`${styles.timer} text-sm`}>{timeLeftStr}</div>
         </div>
       </div>
       <div className={styles.content}>
