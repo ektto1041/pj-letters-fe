@@ -4,10 +4,14 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-end;
 }
 
 .header {
+  position: fixed;
+  z-index: 3;
+  top: 0;
+  left: 0;
   width: 100%;
   transition: 1s transform ease;
   transform: translateY(-100%);
@@ -27,8 +31,7 @@
 
     img {
       display: block;
-      max-width: 400px;
-      width: 80%;
+      width: 300px;
       margin: 0 auto;
     }
   }
