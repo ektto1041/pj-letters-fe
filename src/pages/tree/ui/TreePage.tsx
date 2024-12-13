@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import styles from "./TreePage.module.css";
 import { Header } from "@/widgets";
 import TreeImg from "@assets/tree.svg";
@@ -10,6 +10,7 @@ import CircleArrowRImg from "@assets/circle-arrow-r.svg";
 
 export default function TreePage() {
   const { userId } = useParams();
+  const navigate = useNavigate();
 
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
@@ -134,6 +135,10 @@ export default function TreePage() {
     setPage(page - 1);
   }, [page]);
 
+  const handleClickFriendList = useCallback(() => {
+    navigate("/friend-list");
+  }, []);
+
   console.log(page);
 
   return (
@@ -142,7 +147,7 @@ export default function TreePage() {
       <div className={styles.header}>
         <Header title="나의 트리" />
         <div className={styles["timer-wrapper"]}>
-          <div className={styles.timer}>{timeLeftStr}</div>
+          <div className={`${styles.timer} text-sm`}>{timeLeftStr}</div>
         </div>
       </div>
       <div className={styles.content}>
@@ -170,7 +175,7 @@ export default function TreePage() {
               </button>
             )}
           </div>
-          <MainButton color="primary" onClick={() => {}}>
+          <MainButton color="primary" onClick={handleClickFriendList}>
             친구 목록
           </MainButton>
         </div>
