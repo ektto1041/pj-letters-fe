@@ -144,6 +144,10 @@ export default function TreePage() {
     navigate("/friend-list");
   }, []);
 
+  const handleClickBackButton = useCallback(() => {
+    navigate("/friend-list");
+  }, []);
+
   const handleClickWrite = useCallback(() => {
     navigate(`/new-card/${userId}`);
   }, [userId]);
@@ -152,7 +156,10 @@ export default function TreePage() {
     <div className={styles.container}>
       <div className={styles.ground} />
       <div className={styles.header}>
-        <Header title={`${isMyTree ? "나의 트리" : `의 트리`}`} />
+        <Header
+          title={`${isMyTree ? "나의 트리" : `의 트리`}`}
+          onClickBackButton={isMyTree ? undefined : handleClickBackButton}
+        />
         <div className={styles["timer-wrapper"]}>
           <div className={`${styles.timer} text-sm`}>{timeLeftStr}</div>
         </div>
