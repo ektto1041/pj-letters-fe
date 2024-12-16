@@ -15,7 +15,6 @@
     "@tiptap/extension-text": "^2.10.3",
     "@tiptap/pm": "^2.10.3",
     "@tiptap/react": "^2.10.3",
-    "dom-to-image-more": "^3.5.0",
     "file-saver": "^2.0.5",
     "html-to-image": "^1.11.11",
     "install": "^0.13.0",
@@ -30,7 +29,6 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.15.0",
-    "@types/dom-to-image": "^2.6.7",
     "@types/file-saver": "^2.0.7",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",

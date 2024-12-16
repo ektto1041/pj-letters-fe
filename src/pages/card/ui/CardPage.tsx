@@ -4,8 +4,6 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Editor } from "@/widgets";
 import { MainButton } from "@/shared";
-import { saveAs } from "file-saver";
-import domToImage from "dom-to-image-more";
 import { toPng } from "html-to-image";
 
 export default function CardPage() {
@@ -45,11 +43,6 @@ export default function CardPage() {
 
   const handleSave = useCallback(async () => {
     if (!letterRef.current) return;
-
-    // const blob = await toBlob(letterRef.current);
-    // if (blob !== null) {
-    //   saveAs(blob, "result.png");
-    // }
 
     const png = await toPng(letterRef.current, {
       skipFonts: true,
