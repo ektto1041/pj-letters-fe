@@ -6,6 +6,7 @@ import { Editor } from "@/widgets";
 import { MainButton } from "@/shared";
 import { saveAs } from "file-saver";
 import domToImage from "dom-to-image-more";
+import { toPng } from "html-to-image";
 
 export default function CardPage() {
   const navigate = useNavigate();
@@ -50,12 +51,7 @@ export default function CardPage() {
     //   saveAs(blob, "result.png");
     // }
 
-    // const blob = await domToImage.toBlob(letterRef.current);
-    // if (blob !== null) {
-    //   saveAs(blob, "result.png");
-    // }
-
-    const png = await domToImage.toPng(letterRef.current);
+    const png = await toPng(letterRef.current);
     const link = document.createElement("a");
     link.href = png;
     link.download = "image.png";
