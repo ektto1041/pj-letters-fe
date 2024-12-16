@@ -23,7 +23,7 @@
 }
 
 .content {
-  width: 100%;
+  flex: calc(100% / 3) 0 0;
   height: 100%;
   padding: 16px;
 }
