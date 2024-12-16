@@ -45,9 +45,25 @@ export default function CardPage() {
   const handleSave = useCallback(async () => {
     if (!letterRef.current) return;
 
-    const blob = await toBlob(letterRef.current);
-    if (blob !== null) {
-      saveAs(blob, "result.png");
+    // const blob = await toBlob(letterRef.current);
+    // if (blob !== null) {
+    //   saveAs(blob, "result.png");
+    // }
+
+    // const blob = await domToImage.toBlob(letterRef.current);
+    // if (blob !== null) {
+    //   saveAs(blob, "result.png");
+    // }
+
+    const png = await domToImage.toPng(letterRef.current);
+    const link = document.createElement("a");
+    link.href = png;
+    link.download = "image.png";
+
+    if (navigator.userAgent.match(/iPhone|iPad|iPod/i)) {
+      window.open(png, "_blank");
+    } else {
+      link.click();
     }
   }, []);
 
