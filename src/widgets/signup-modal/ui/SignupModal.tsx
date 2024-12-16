@@ -133,86 +133,92 @@ export default function SignupModal({ onClose }: SingupModalProps) {
         <div className={styles["contents-box"]}>
           <div className={`${styles.contents} ${styles[`p${page}`]}`}>
             <div className={`${styles.content} ${styles.p0}`}>
-              <div className={`${styles.description} text-sm`}>
-                사용 가능한 이메일을 입력해주세요.
-                <br />
-                이메일 인증에 활용됩니다.
+              <div className={styles["inner-content"]}>
+                <div className={`${styles.description} text-sm`}>
+                  사용 가능한 이메일을 입력해주세요.
+                  <br />
+                  이메일 인증에 활용됩니다.
+                </div>
+                <MainInput
+                  icon={EmailImg}
+                  placeholder="Email"
+                  type="email"
+                  value={email}
+                  disabled={phase !== "email"}
+                  onChange={handleChangeEmail}
+                />
               </div>
-              <MainInput
-                icon={EmailImg}
-                placeholder="Email"
-                type="email"
-                value={email}
-                disabled={phase !== "email"}
-                onChange={handleChangeEmail}
-              />
             </div>
             <div className={`${styles.content} ${styles.p1}`}>
-              <div className={`${styles.description} text-sm`}>
-                입력하신 이메일로 인증코드가 발송되었습니다.
-                <br />
-                인증코드를 입력해주세요
+              <div className={styles["inner-content"]}>
+                <div className={`${styles.description} text-sm`}>
+                  입력하신 이메일로 인증코드가 발송되었습니다.
+                  <br />
+                  인증코드를 입력해주세요
+                </div>
+                <MainInput
+                  icon={KeyImg}
+                  placeholder="인증코드"
+                  type="text"
+                  value={authKey}
+                  maxLength={6}
+                  disabled={phase !== "authCode"}
+                  onChange={handleChangeAuthKey}
+                />
               </div>
-              <MainInput
-                icon={KeyImg}
-                placeholder="인증코드"
-                type="text"
-                value={authKey}
-                maxLength={6}
-                disabled={phase !== "authCode"}
-                onChange={handleChangeAuthKey}
-              />
             </div>
             <div className={`${styles.content} ${styles.p2}`}>
-              <div className={`${styles.description} text-md`}>
-                이메일 인증이 완료되었습니다!
-              </div>
-              <div className={`${styles.description} text-sm`}>
-                이제 남은 정보를 입력해주세요.
-              </div>
-              <MainInput
-                icon={AccountImg}
-                placeholder="이름 (본명)"
-                type="text"
-                value={name}
-                maxLength={3}
-                disabled={phase !== "extra"}
-                onChange={handleChangeName}
-              />
-              <div className={`${styles.hint} text-xs`}></div>
-              <MainInput
-                icon={LockImg}
-                placeholder="비밀번호"
-                type="password"
-                value={password}
-                maxLength={12}
-                disabled={phase !== "extra"}
-                onChange={handleChangePassword}
-              />
-              <div
-                className={`${styles.hint} text-xs ${
-                  isPasswordValid ? styles.hide : ""
-                }`}
-              >
-                최소 8글자 이상 입력해주세요.
-              </div>
-              <MainInput
-                icon={LockImg}
-                placeholder="비밀번호 확인"
-                type="password"
-                value={confirmPassword}
-                maxLength={12}
-                disabled={phase !== "extra"}
-                onChange={handleChangeConfirmPassword}
-              />
-              <div
-                className={`${styles.hint} text-xs ${
-                  isConfirmPasswordValid || confirmPassword.length === 0
-                    ? styles.hide
-                    : ""
-                }`}
-              >
-                비밀번호가 틀립니다.
+              <div className={styles["inner-content"]}>
+                <div className={`${styles.description} text-md`}>
+                  이메일 인증이 완료되었습니다!
+                </div>
+                <div className={`${styles.description} text-sm`}>
+                  이제 남은 정보를 입력해주세요.
+                </div>
+                <MainInput
+                  icon={AccountImg}
+                  placeholder="이름 (본명)"
+                  type="text"
+                  value={name}
+                  maxLength={3}
+                  disabled={phase !== "extra"}
+                  onChange={handleChangeName}
+                />
+                <div className={`${styles.hint} text-xs`}></div>
+                <MainInput
+                  icon={LockImg}
+                  placeholder="비밀번호"
+                  type="password"
+                  value={password}
+                  maxLength={12}
+                  disabled={phase !== "extra"}
+                  onChange={handleChangePassword}
+                />
+                <div
+                  className={`${styles.hint} text-xs ${
+                    isPasswordValid ? styles.hide : ""
+                  }`}
+                >
+                  최소 8글자 이상 입력해주세요.
+                </div>
+                <MainInput
+                  icon={LockImg}
+                  placeholder="비밀번호 확인"
+                  type="password"
+                  value={confirmPassword}
+                  maxLength={12}
+                  disabled={phase !== "extra"}
+                  onChange={handleChangeConfirmPassword}
+                />
+                <div
+                  className={`${styles.hint} text-xs ${
+                    isConfirmPasswordValid || confirmPassword.length === 0
+                      ? styles.hide
+                      : ""
+                  }`}
+                >
+                  비밀번호가 틀립니다.
+                </div>
               </div>
             </div>
           </div>
