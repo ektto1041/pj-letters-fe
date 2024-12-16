@@ -29,6 +29,7 @@ export default function IntroPage() {
         userId: "1",
         email: "a@a.com",
         name: "Park",
+        profile: "abcd",
       };
       setUser(newUser);
       navigate("/tree/1");
