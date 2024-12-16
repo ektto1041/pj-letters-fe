@@ -1,6 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom";
 import styles from "./TreePage.module.css";
-import { Header } from "@/widgets";
+import { Header, InfoModal } from "@/widgets";
 import TreeImg from "@assets/tree.svg";
 import { MainButton, TextButton } from "@/shared";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -25,6 +25,7 @@ export default function TreePage() {
   });
   const [letters, setLetters] = useState<Letter[]>([]);
   const [page, setPage] = useState(0);
+  const [isMyInfoModalOpen, setMyInfoModalOpen] = useState(false);
 
   const hasNextPage = useMemo(() => {
     const lettersCount = letters.length;
@@ -156,7 +157,13 @@ export default function TreePage() {
     navigate(`/card/${letterId}`);
   }, []);
 
-  const handleClickMyInfo = useCallback(() => {}, []);
+  const handleClickMyInfo = useCallback(() => {
+    setMyInfoModalOpen(true);
+  }, []);
+
+  const handleCloseMyInfoModal = useCallback(() => {
+    setMyInfoModalOpen(false);
+  }, []);
 
   return (
     <div className={styles.container}>
@@ -198,7 +205,7 @@ export default function TreePage() {
           </div>
           {isMyTree ? (
             <>
-              <TextButton onClick={handleClickMyInfo}>내 정보 수정</TextButton>
+              <TextButton onClick={handleClickMyInfo}>비밀번호 수정</TextButton>
               <MainButton color="primary" onClick={handleClickFriendList}>
                 친구 목록
               </MainButton>
@@ -210,6 +217,8 @@ export default function TreePage() {
           )}
         </div>
       </div>
+
+      {isMyInfoModalOpen && <InfoModal onClose={handleCloseMyInfoModal} />}
     </div>
   );
 }
