@@ -31,7 +31,7 @@
 
     img {
       display: block;
-      width: 300px;
+      width: 250px;
       margin: 0 auto;
     }
   }
@@ -55,14 +55,12 @@
   flex-direction: column;
   gap: 16px;
   overflow-y: hidden;
-  transition: height 1s ease, opacity 0.75s 0.25s ease, margin-bottom 1s ease;
+  transition: height 1s ease, opacity 0.75s 0.25s ease;
   height: 0;
   opacity: 0;
-  margin-bottom: 0;
 
   &.login-phase {
     opacity: 1;
     height: 112px;
-    margin-bottom: 16px;
   }
 }

@@ -2,7 +2,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import styles from "./TreePage.module.css";
 import { Header } from "@/widgets";
 import TreeImg from "@assets/tree.svg";
-import { MainButton } from "@/shared";
+import { MainButton, TextButton } from "@/shared";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { cardImgs, Letter, useUserState } from "@/features";
 import CircleArrowLImg from "@assets/circle-arrow-l.svg";
@@ -73,7 +73,7 @@ export default function TreePage() {
         content: "This is Letter 1",
         createdAt: "2024-12-13",
         nickname: "Writer 1",
-        card: 1,
+        sticker: 1,
       },
       {
         letterId: "2",
@@ -82,7 +82,7 @@ export default function TreePage() {
         content: "This is Letter 1",
         createdAt: "2024-12-13",
         nickname: "Writer 1",
-        card: 2,
+        sticker: 2,
       },
       {
         letterId: "3",
@@ -91,7 +91,7 @@ export default function TreePage() {
         content: "This is Letter 1",
         createdAt: "2024-12-13",
         nickname: "Writer 1",
-        card: 3,
+        sticker: 3,
       },
       {
         letterId: "4",
@@ -100,7 +100,7 @@ export default function TreePage() {
         content: "This is Letter 1",
         createdAt: "2024-12-13",
         nickname: "Writer 1",
-        card: 4,
+        sticker: 4,
       },
       {
         letterId: "5",
@@ -109,7 +109,7 @@ export default function TreePage() {
         content: "This is Letter 1",
         createdAt: "2024-12-13",
         nickname: "Writer 1",
-        card: 5,
+        sticker: 5,
       },
       {
         letterId: "6",
@@ -118,7 +118,7 @@ export default function TreePage() {
         content: "This is Letter 1",
         createdAt: "2024-12-13",
         nickname: "Writer 1",
-        card: 6,
+        sticker: 6,
       },
     ];
 
@@ -152,6 +152,12 @@ export default function TreePage() {
     navigate(`/new-card/${userId}`);
   }, [userId]);
 
+  const handleClickLetter = useCallback((letterId: string) => {
+    navigate(`/card/${letterId}`);
+  }, []);
+
+  const handleClickMyInfo = useCallback(() => {});
+
   return (
     <div className={styles.container}>
       <div className={styles.ground} />
@@ -171,8 +177,9 @@ export default function TreePage() {
             <div
               className={`${styles["card-wrapper"]} ${styles[`card${i + 1}`]}`}
               key={letter.letterId}
+              onClick={() => handleClickLetter(letter.letterId)}
             >
-              <img src={cardImgs[letter.card - 1]} alt="CardImg" />
+              <img src={cardImgs[letter.sticker - 1]} alt="CardImg" />
             </div>
           ))}
         </div>
@@ -190,9 +197,12 @@ export default function TreePage() {
             )}
           </div>
           {isMyTree ? (
-            <MainButton color="primary" onClick={handleClickFriendList}>
-              친구 목록
-            </MainButton>
+            <>
+              <TextButton onClick={handleClickMyInfo}>내 정보 수정</TextButton>
+              <MainButton color="primary" onClick={handleClickFriendList}>
+                친구 목록
+              </MainButton>
+            </>
           ) : (
             <MainButton color="primary" onClick={handleClickWrite}>
               글 남기기

@@ -1,9 +1,8 @@
 import { ChangeEventHandler, useCallback, useMemo, useState } from "react";
 import styles from "./NewCardPage.module.css";
-import { cardImgs } from "@/features";
+import { cardImgs, LetterBase } from "@/features";
 import { Editor } from "@/widgets";
 import { MainButton } from "@/shared";
-import CloseImg from "@assets/close.svg";
 import { useNavigate, useParams } from "react-router-dom";
 
 type NewCardPhase = "img" | "title";
@@ -68,67 +67,62 @@ export default function NewCardPage() {
   }, [userId]);
 
   return (
-    <div className={styles.container}>
-      <div className={styles.content}>
-        <button className={styles["close-button"]} onClick={handleClose}>
-          <img src={CloseImg} alt="CloseButton" />
-        </button>
-        <div
-          className={styles["selected-img-wrapper"]}
-          onClick={handleClickSelectedImg}
-        >
-          <img src={cardImgs[selectedImg]} alt="SelectedCardImg" />
-          {phase === "img" && (
-            <div className={styles["img-box-wrapper"]}>
-              <div className={styles["img-box"]}>
-                {cardImgs.map((cardImg, i) => (
-                  <div
-                    key={i}
-                    className={styles["card-img-wrapper"]}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleClickCardImg(i);
-                    }}
-                  >
-                    <img src={cardImg} alt="CardImg" />
-                  </div>
-                ))}
-              </div>
+    <LetterBase onClose={handleClose}>
+      <div
+        className={styles["selected-img-wrapper"]}
+        onClick={handleClickSelectedImg}
+      >
+        <img src={cardImgs[selectedImg]} alt="SelectedCardImg" />
+        {phase === "img" && (
+          <div className={styles["img-box-wrapper"]}>
+            <div className={styles["img-box"]}>
+              {cardImgs.map((cardImg, i) => (
+                <div
+                  key={i}
+                  className={styles["card-img-wrapper"]}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleClickCardImg(i);
+                  }}
+                >
+                  <img src={cardImg} alt="CardImg" />
+                </div>
+              ))}
             </div>
-          )}
-        </div>
+          </div>
+        )}
+      </div>
 
+      <input
+        type="text"
+        className={`${styles.title} text-md`}
+        placeholder="제목을 입력하세요"
+        disabled={phase === "img"}
+        value={title}
+        onChange={handleChangeTitle}
+      />
+      <div className={styles["editor-wrapper"]}>
+        <Editor onChange={handleChangeContent} defaultContent="<p></p>" />
+      </div>
+      <div className={styles["writer-wrapper"]}>
         <input
           type="text"
-          className={`${styles.title} text-md`}
-          placeholder="제목을 입력하세요"
+          className={`${styles.nickname} text-sm`}
+          placeholder="보낸이를 입력하세요"
           disabled={phase === "img"}
-          value={title}
-          onChange={handleChangeTitle}
+          value={nickname}
+          onChange={handleChangeNickname}
         />
-        <div className={styles["editor-wrapper"]}>
-          <Editor onChange={handleChangeContent} defaultContent="<p></p>" />
-        </div>
-        <div className={styles["writer-wrapper"]}>
-          <input
-            type="text"
-            className={`${styles.nickname} text-sm`}
-            placeholder="보낸이를 입력하세요"
-            disabled={phase === "img"}
-            value={nickname}
-            onChange={handleChangeNickname}
-          />
-        </div>
-        <div className={styles["submit-wrapper"]}>
-          <MainButton
-            color="primary"
-            onClick={handleClickSubmit}
-            disabled={!canSubmit}
-          >
-            전송
-          </MainButton>
-        </div>
       </div>
-    </div>
+      <div className={styles["submit-wrapper"]}>
+        <MainButton
+          color="primary"
+          onClick={handleClickSubmit}
+          disabled={!canSubmit}
+        >
+          전송
+        </MainButton>
+      </div>
+    </LetterBase>
   );
 }

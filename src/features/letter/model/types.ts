@@ -5,5 +5,5 @@ export interface Letter {
   content: string;
   nickname: string;
   createdAt: string;
-  card: number;
+  sticker: number;
 }
