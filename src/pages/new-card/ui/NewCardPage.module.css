@@ -41,15 +41,17 @@
 
 .img-box-wrapper {
   position: absolute;
+  z-index: 1;
   top: 100px;
   left: 0;
-  transition: opacity 0.65s, transform 0.65s ease-in-out;
   background-color: var(--color-gray-50);
   cursor: default;
+  animation: slideIn 0.5s;
 }
 
 .img-box {
   position: relative;
+
   width: auto;
   padding: 8px;
   gap: 8px;
@@ -72,15 +74,13 @@
   }
 }
 
-.closed {
-  opacity: 0;
-  transform: translateY(-170%);
-}
-
 .nickname {
-  width: 200px;
+  width: 150px;
   padding: 4px;
+  padding-left: 8px;
+  padding-right: 8px;
   border-bottom: 2px solid var(--color-gray-900);
+  text-align: end;
 
   &::placeholder {
     color: var(--color-gray-500);
@@ -101,8 +101,29 @@
 .editor-wrapper {
   width: 100%;
   flex-grow: 1;
+  overflow-y: scroll;
+  background-color: var(--color-gray-100);
+}
 
-  & > div {
-    height: 100%;
+.writer-wrapper {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.submit-wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+@keyframes slideIn {
+  0% {
+    transform: translateY(-10%);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translateY(0);
+    opacity: 1;
   }
 }
