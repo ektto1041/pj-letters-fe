@@ -1,6 +1,5 @@
 .container {
-  padding-top: 8px;
-  padding-bottom: 8px;
+  padding: 8px;
   border-radius: 8px;
   color: var(--color-gray-50);
   transition: background-color 0.25s;
