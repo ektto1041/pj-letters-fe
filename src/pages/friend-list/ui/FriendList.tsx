@@ -2,11 +2,13 @@ import { Header } from "@/widgets";
 import styles from "./FriendList.module.css";
 import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Friend } from "@/features";
+import { Friend, useUserState } from "@/features";
 import FriendItem from "./FriendItem";
 
 export default function FriendList() {
   const navigate = useNavigate();
+
+  const { user } = useUserState();
 
   const [friends, setFriends] = useState<Friend[]>([]);
 
@@ -35,8 +37,8 @@ export default function FriendList() {
   }, []);
 
   const handleClickBackButton = useCallback(() => {
-    navigate(-1);
-  }, []);
+    navigate(`/tree/${user?.userId}`);
+  }, [user]);
 
   return (
     <div className={styles.container}>

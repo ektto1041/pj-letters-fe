@@ -27,7 +27,7 @@ const router = createBrowserRouter([
         element: <FriendListPage />,
       },
       {
-        path: "/new-card",
+        path: "/new-card/:userId",
         element: <NewCardPage />,
       },
       {

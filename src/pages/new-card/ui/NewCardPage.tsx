@@ -3,11 +3,16 @@ import styles from "./NewCardPage.module.css";
 import { cardImgs } from "@/features";
 import { Editor } from "@/widgets";
 import { MainButton } from "@/shared";
+import CloseImg from "@assets/close.svg";
+import { useNavigate, useParams } from "react-router-dom";
 
 type NewCardPhase = "img" | "title";
 
 export default function NewCardPage() {
-  const [phase, setPhase] = useState<NewCardPhase>("img");
+  const { userId } = useParams();
+  const navigate = useNavigate();
+
+  const [phase, setPhase] = useState<NewCardPhase>("title");
   const [selectedImg, setSelectedImg] = useState(0);
   const [nickname, setNickname] = useState("");
   const [title, setTitle] = useState("");
@@ -18,6 +23,14 @@ export default function NewCardPage() {
       phase === "title" && nickname.trim().length > 0 && title.trim().length > 0
     );
   }, [phase, nickname, title]);
+
+  const handleClose = useCallback(() => {
+    const answer = confirm("작성한 편지가 사라집니다. 정말 나가시겠습니까?");
+
+    if (answer) {
+      navigate(`/tree/${userId}`);
+    }
+  }, [userId]);
 
   const handleClickSelectedImg = useCallback(() => {
     setPhase("img");
@@ -44,11 +57,22 @@ export default function NewCardPage() {
     setContent(value);
   }, []);
 
-  const handleClickSubmit = useCallback(() => {}, []);
+  const handleClickSubmit = useCallback(() => {
+    const answer = confirm(
+      "한 번 작성한 편지는 수정할 수 없습니다. 전송하시겠습니까?"
+    );
+
+    if (answer) {
+      navigate(`/tree/${userId}`);
+    }
+  }, [userId]);
 
   return (
     <div className={styles.container}>
       <div className={styles.content}>
+        <button className={styles["close-button"]} onClick={handleClose}>
+          <img src={CloseImg} alt="CloseButton" />
+        </button>
         <div
           className={styles["selected-img-wrapper"]}
           onClick={handleClickSelectedImg}
