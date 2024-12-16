@@ -5,7 +5,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Editor } from "@/widgets";
 import { MainButton } from "@/shared";
 import { saveAs } from "file-saver";
-import { toBlob } from "html-to-image";
+import domToImage from "dom-to-image-more";
 
 export default function CardPage() {
   const navigate = useNavigate();
@@ -45,7 +45,12 @@ export default function CardPage() {
   const handleSave = useCallback(async () => {
     if (!letterRef.current) return;
 
-    const blob = await toBlob(letterRef.current);
+    // const blob = await toBlob(letterRef.current);
+    // if (blob !== null) {
+    //   saveAs(blob, "result.png");
+    // }
+
+    const blob = await domToImage.toBlob(letterRef.current);
     if (blob !== null) {
       saveAs(blob, "result.png");
     }
