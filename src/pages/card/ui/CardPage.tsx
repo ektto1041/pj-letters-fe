@@ -4,8 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Editor } from "@/widgets";
 import { MainButton } from "@/shared";
-import { saveAs } from "file-saver";
-import { toBlob } from "html-to-image";
+import { toPng } from "html-to-image";
 
 export default function CardPage() {
   const navigate = useNavigate();
@@ -45,9 +44,17 @@ export default function CardPage() {
   const handleSave = useCallback(async () => {
     if (!letterRef.current) return;
 
-    const blob = await toBlob(letterRef.current);
-    if (blob !== null) {
-      saveAs(blob, "result.png");
+    const png = await toPng(letterRef.current, {
+      skipFonts: true,
+    });
+    const link = document.createElement("a");
+    link.href = png;
+    link.download = "image.png";
+
+    if (navigator.userAgent.match(/iPhone|iPad|iPod/i)) {
+      window.open(png, "_blank");
+    } else {
+      link.click();
     }
   }, []);
 
@@ -56,7 +63,11 @@ export default function CardPage() {
       {letter !== null && (
         <>
           <div className={styles["sticker-wrapper"]}>
-            <img src={cardImgs[letter.sticker]} alt="Sticker" />
+            <img
+              src={cardImgs[letter.sticker]}
+              alt="Sticker"
+              crossOrigin="anonymous"
+            />
           </div>
           <div className={`${styles.title} header-h4`}>{letter.title}</div>
           <div className={styles["editor-wrapper"]}>
