@@ -15,6 +15,7 @@
     "@tiptap/extension-text": "^2.10.3",
     "@tiptap/pm": "^2.10.3",
     "@tiptap/react": "^2.10.3",
+    "axios": "^1.7.9",
     "file-saver": "^2.0.5",
     "html-to-image": "^1.11.11",
     "install": "^0.13.0",
