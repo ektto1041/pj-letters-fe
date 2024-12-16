@@ -144,7 +144,9 @@ export default function TreePage() {
     navigate("/friend-list");
   }, []);
 
-  const handleClickWrite = useCallback(() => {}, []);
+  const handleClickWrite = useCallback(() => {
+    navigate(`/new-card/${userId}`);
+  }, [userId]);
 
   return (
     <div className={styles.container}>
