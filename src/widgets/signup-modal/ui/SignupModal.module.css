@@ -18,7 +18,7 @@
   left: 0;
   width: 300%;
   height: 100%;
-  transition: transform 0.5s;
+  transition: left 0.5s;
   display: flex;
 }
 
@@ -56,15 +56,15 @@
 }
 
 .contents.p0 {
-  transform: translateX(0);
+  left: 0;
 }
 
 .contents.p1 {
-  transform: translateX(calc(-1 * 100% / 3));
+  left: -100%;
 }
 
 .contents.p2 {
-  transform: translateX(calc(-2 * 100% / 3));
+  left: -200%;
 }
 /* 
 .content.p0 {
