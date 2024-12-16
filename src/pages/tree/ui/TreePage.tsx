@@ -152,6 +152,10 @@ export default function TreePage() {
     navigate(`/new-card/${userId}`);
   }, [userId]);
 
+  const handleClickLetter = useCallback((letterId: string) => {
+    navigate(`/card/${letterId}`);
+  }, []);
+
   return (
     <div className={styles.container}>
       <div className={styles.ground} />
@@ -171,6 +175,7 @@ export default function TreePage() {
             <div
               className={`${styles["card-wrapper"]} ${styles[`card${i + 1}`]}`}
               key={letter.letterId}
+              onClick={() => handleClickLetter(letter.letterId)}
             >
               <img src={cardImgs[letter.sticker - 1]} alt="CardImg" />
             </div>
