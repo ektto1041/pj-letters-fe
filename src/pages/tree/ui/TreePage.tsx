@@ -73,7 +73,7 @@ export default function TreePage() {
         content: "This is Letter 1",
         createdAt: "2024-12-13",
         nickname: "Writer 1",
-        card: 1,
+        sticker: 1,
       },
       {
         letterId: "2",
@@ -82,7 +82,7 @@ export default function TreePage() {
         content: "This is Letter 1",
         createdAt: "2024-12-13",
         nickname: "Writer 1",
-        card: 2,
+        sticker: 2,
       },
       {
         letterId: "3",
@@ -91,7 +91,7 @@ export default function TreePage() {
         content: "This is Letter 1",
         createdAt: "2024-12-13",
         nickname: "Writer 1",
-        card: 3,
+        sticker: 3,
       },
       {
         letterId: "4",
@@ -100,7 +100,7 @@ export default function TreePage() {
         content: "This is Letter 1",
         createdAt: "2024-12-13",
         nickname: "Writer 1",
-        card: 4,
+        sticker: 4,
       },
       {
         letterId: "5",
@@ -109,7 +109,7 @@ export default function TreePage() {
         content: "This is Letter 1",
         createdAt: "2024-12-13",
         nickname: "Writer 1",
-        card: 5,
+        sticker: 5,
       },
       {
         letterId: "6",
@@ -118,7 +118,7 @@ export default function TreePage() {
         content: "This is Letter 1",
         createdAt: "2024-12-13",
         nickname: "Writer 1",
-        card: 6,
+        sticker: 6,
       },
     ];
 
@@ -172,7 +172,7 @@ export default function TreePage() {
               className={`${styles["card-wrapper"]} ${styles[`card${i + 1}`]}`}
               key={letter.letterId}
             >
-              <img src={cardImgs[letter.card - 1]} alt="CardImg" />
+              <img src={cardImgs[letter.sticker - 1]} alt="CardImg" />
             </div>
           ))}
         </div>

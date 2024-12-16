@@ -5,7 +5,7 @@ import { EditorContent, useEditor } from "@tiptap/react";
 import "./Editor.css";
 
 interface EditorProps {
-  onChange: (value: string) => void;
+  onChange?: (value: string) => void;
   defaultContent?: string;
   editable?: boolean;
 }
@@ -18,7 +18,7 @@ export default function Editor({
   const editor = useEditor({
     extensions: [Document, Paragraph, Text],
     content: defaultContent,
-    onUpdate: (p) => onChange(p.editor.getHTML()),
+    onUpdate: onChange && ((p) => onChange(p.editor.getHTML())),
     editable,
     editorProps: {
       attributes: {

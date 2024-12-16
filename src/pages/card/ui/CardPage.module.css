@@ -1,0 +1,19 @@
+.writer-wrapper {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.editor-wrapper {
+  flex-grow: 1;
+  background-color: var(--color-gray-100);
+}
+
+.nickname {
+  width: auto;
+  display: inline;
+}
+
+.button-wrapper {
+  display: flex;
+  flex-direction: column;
+}
