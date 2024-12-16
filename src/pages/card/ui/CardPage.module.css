@@ -4,7 +4,9 @@
 }
 
 .editor-wrapper {
+  width: 100%;
   flex-grow: 1;
+  overflow-y: scroll;
   background-color: var(--color-gray-100);
 }
 
