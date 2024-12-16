@@ -133,12 +133,12 @@ export default function SignupModal({ onClose }: SingupModalProps) {
         <div className={styles["contents-box"]}>
           <div className={`${styles.contents} ${styles[`p${page}`]}`}>
             <div className={`${styles.content} ${styles.p0}`}>
-              <div className={styles["inner-content"]}>
-                <div className={`${styles.description} text-sm`}>
-                  사용 가능한 이메일을 입력해주세요.
-                  <br />
-                  이메일 인증에 활용됩니다.
-                </div>
+              <div className={`${styles.description} text-sm ${styles.item}`}>
+                사용 가능한 이메일을 입력해주세요.
+                <br />
+                이메일 인증에 활용됩니다.
+              </div>
+              <div className={styles.item}>
                 <MainInput
                   icon={EmailImg}
                   placeholder="Email"
@@ -150,12 +150,12 @@ export default function SignupModal({ onClose }: SingupModalProps) {
               </div>
             </div>
             <div className={`${styles.content} ${styles.p1}`}>
-              <div className={styles["inner-content"]}>
-                <div className={`${styles.description} text-sm`}>
-                  입력하신 이메일로 인증코드가 발송되었습니다.
-                  <br />
-                  인증코드를 입력해주세요
-                </div>
+              <div className={`${styles.description} text-sm ${styles.item}`}>
+                입력하신 이메일로 인증코드가 발송되었습니다.
+                <br />
+                인증코드를 입력해주세요
+              </div>
+              <div className={styles.item}>
                 <MainInput
                   icon={KeyImg}
                   placeholder="인증코드"
@@ -168,7 +168,7 @@ export default function SignupModal({ onClose }: SingupModalProps) {
               </div>
             </div>
             <div className={`${styles.content} ${styles.p2}`}>
-              <div className={styles["inner-content"]}>
+              <div className={styles.item}>
                 <div className={`${styles.description} text-md`}>
                   이메일 인증이 완료되었습니다!
                 </div>

@@ -30,7 +30,11 @@
 .inner-content {
   width: 100%;
   height: 100%;
-  padding: 16px;
+}
+
+.item {
+  width: calc(100% - 32px);
+  margin: 0 auto;
 }
 
 .description {
@@ -71,18 +75,6 @@
 .contents.p2 {
   left: -200%;
 }
-/* 
-.content.p0 {
-  background-color: red;
-}
-
-.content.p1 {
-  background-color: blue;
-}
-
-.content.p2 {
-  background-color: green;
-} */
 
 @keyframes slideIn {
   0% {
