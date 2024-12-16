@@ -5,7 +5,7 @@ import CloseImg from "@assets/close.svg";
 interface LetterBaseProps {
   onClose: () => void;
   children: ReactNode;
-  refs: RefObject<HTMLDivElement>;
+  refs?: RefObject<HTMLDivElement>;
 }
 
 export default function LetterBase({

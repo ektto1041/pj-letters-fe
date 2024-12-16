@@ -156,7 +156,7 @@ export default function TreePage() {
     navigate(`/card/${letterId}`);
   }, []);
 
-  const handleClickMyInfo = useCallback(() => {});
+  const handleClickMyInfo = useCallback(() => {}, []);
 
   return (
     <div className={styles.container}>
