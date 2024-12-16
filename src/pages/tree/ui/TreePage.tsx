@@ -2,7 +2,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import styles from "./TreePage.module.css";
 import { Header } from "@/widgets";
 import TreeImg from "@assets/tree.svg";
-import { MainButton } from "@/shared";
+import { MainButton, TextButton } from "@/shared";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { cardImgs, Letter, useUserState } from "@/features";
 import CircleArrowLImg from "@assets/circle-arrow-l.svg";
@@ -156,6 +156,8 @@ export default function TreePage() {
     navigate(`/card/${letterId}`);
   }, []);
 
+  const handleClickMyInfo = useCallback(() => {});
+
   return (
     <div className={styles.container}>
       <div className={styles.ground} />
@@ -195,9 +197,12 @@ export default function TreePage() {
             )}
           </div>
           {isMyTree ? (
-            <MainButton color="primary" onClick={handleClickFriendList}>
-              친구 목록
-            </MainButton>
+            <>
+              <TextButton onClick={handleClickMyInfo}>내 정보 수정</TextButton>
+              <MainButton color="primary" onClick={handleClickFriendList}>
+                친구 목록
+              </MainButton>
+            </>
           ) : (
             <MainButton color="primary" onClick={handleClickWrite}>
               글 남기기
