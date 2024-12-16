@@ -89,6 +89,7 @@ export default function IntroPage() {
               icon={EmailImg}
               placeholder="Email"
               value={email}
+              type="email"
               onChange={handleChangeEmail}
             />
             <MainInput

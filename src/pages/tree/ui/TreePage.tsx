@@ -205,7 +205,7 @@ export default function TreePage() {
           </div>
           {isMyTree ? (
             <>
-              <TextButton onClick={handleClickMyInfo}>비밀번호 수정</TextButton>
+              <TextButton onClick={handleClickMyInfo}>비밀번호 변경</TextButton>
               <MainButton color="primary" onClick={handleClickFriendList}>
                 친구 목록
               </MainButton>
