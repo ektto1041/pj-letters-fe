@@ -11,10 +11,10 @@
 
 .container {
   position: absolute;
-  top: 5vh;
-  left: calc(50% - 45vw);
-  width: 90vw;
-  height: 90vh;
+  top: 5dvh;
+  left: calc(50% - 45dvw);
+  width: 90dvw;
+  height: 90dvh;
   background-color: var(--color-gray-50);
   border-radius: 8px;
   box-shadow: 0 0 4px var(--color-gray-50);
