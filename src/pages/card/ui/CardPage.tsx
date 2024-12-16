@@ -1,4 +1,4 @@
-import { Letter, LetterBase, useUserState } from "@/features";
+import { cardImgs, Letter, LetterBase, useUserState } from "@/features";
 import styles from "./CardPage.module.css";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -55,6 +55,9 @@ export default function CardPage() {
     <LetterBase onClose={handleClose} refs={letterRef}>
       {letter !== null && (
         <>
+          <div className={styles["sticker-wrapper"]}>
+            <img src={cardImgs[letter.sticker]} alt="Sticker" />
+          </div>
           <div className={`${styles.title} header-h4`}>{letter.title}</div>
           <div className={styles["editor-wrapper"]}>
             <Editor defaultContent={letter.content} editable={false} />
