@@ -70,7 +70,11 @@ export default function CardPage() {
       {letter !== null && (
         <>
           <div className={styles["sticker-wrapper"]}>
-            <img src={cardImgs[letter.sticker]} alt="Sticker" />
+            <img
+              src={cardImgs[letter.sticker]}
+              alt="Sticker"
+              crossOrigin="anonymous"
+            />
           </div>
           <div className={`${styles.title} header-h4`}>{letter.title}</div>
           <div className={styles["editor-wrapper"]}>
