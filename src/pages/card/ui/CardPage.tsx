@@ -51,7 +51,9 @@ export default function CardPage() {
     //   saveAs(blob, "result.png");
     // }
 
-    const png = await toPng(letterRef.current);
+    const png = await toPng(letterRef.current, {
+      skipFonts: true,
+    });
     const link = document.createElement("a");
     link.href = png;
     link.download = "image.png";
