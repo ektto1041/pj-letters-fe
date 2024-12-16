@@ -1,7 +1,7 @@
-import { MainButton, MainInput } from "@/shared";
+import { MainButton, MainInput, TextButton } from "@/shared";
 import styles from "./IntroPage.module.css";
 import TreeImg from "@assets/tree.svg";
-import { Header } from "@/widgets";
+import { Header, SignupModal } from "@/widgets";
 import { ChangeEventHandler, useCallback, useMemo, useState } from "react";
 import EmailImg from "@assets/email.svg";
 import LockImg from "@assets/lock.svg";
@@ -16,6 +16,8 @@ export default function IntroPage() {
   const [isLoginPhase, setLoginPhase] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isSignupModalOpen, setSignupModalOpen] = useState(false);
+
   const isEmailValid = useMemo(() => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
@@ -27,13 +29,14 @@ export default function IntroPage() {
         userId: "1",
         email: "a@a.com",
         name: "Park",
+        profile: "abcd",
       };
       setUser(newUser);
       navigate("/tree/1");
     } else {
       setLoginPhase(true);
     }
-  }, [isLoginPhase]);
+  }, [isLoginPhase, setUser]);
 
   const handleClickBackButton = useCallback(() => {
     setEmail("");
@@ -52,6 +55,14 @@ export default function IntroPage() {
     useCallback((e) => {
       setPassword(e.target.value);
     }, []);
+
+  const handleOpenSignupModal = useCallback(() => {
+    setSignupModalOpen(true);
+  }, []);
+
+  const handleCloseSignupModal = useCallback(() => {
+    setSignupModalOpen(false);
+  }, []);
 
   return (
     <div className={styles.container}>
@@ -88,6 +99,9 @@ export default function IntroPage() {
               onChange={handleChangePassword}
               maxLength={8}
             />
+            <TextButton onClick={handleOpenSignupModal}>
+              회원가입하기
+            </TextButton>
           </div>
           <MainButton
             color="primary"
@@ -98,6 +112,8 @@ export default function IntroPage() {
           </MainButton>
         </div>
       </div>
+
+      {isSignupModalOpen && <SignupModal onClose={handleCloseSignupModal} />}
     </div>
   );
 }

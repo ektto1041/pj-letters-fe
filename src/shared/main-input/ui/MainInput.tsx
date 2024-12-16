@@ -7,6 +7,7 @@ interface MainInputProps {
   type?: HTMLInputTypeAttribute;
   maxLength?: number;
   value: string;
+  disabled?: boolean;
   onChange: ChangeEventHandler<HTMLInputElement>;
 }
 
@@ -16,6 +17,7 @@ export default function MainInput({
   type = "text",
   maxLength,
   value,
+  disabled,
   onChange,
 }: MainInputProps) {
   return (
@@ -29,6 +31,7 @@ export default function MainInput({
         placeholder={placeholder}
         type={type}
         value={value}
+        disabled={disabled}
         onChange={onChange}
       />
     </div>
