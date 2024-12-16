@@ -6,7 +6,7 @@ import { ChangeEventHandler, useCallback, useMemo, useState } from "react";
 import EmailImg from "@assets/email.svg";
 import LockImg from "@assets/lock.svg";
 import { useNavigate } from "react-router-dom";
-import { User, useUserState } from "@/features";
+import { login, LoginReqDto, useUserState } from "@/features";
 
 export default function IntroPage() {
   const navigate = useNavigate();
@@ -23,20 +23,32 @@ export default function IntroPage() {
     return emailRegex.test(email);
   }, [email]);
 
-  const handleClickLogin = useCallback(() => {
+  const handleClickLogin = useCallback(async () => {
     if (isLoginPhase) {
-      const newUser: User = {
-        userId: "1",
-        email: "a@a.com",
-        name: "Park",
-        profile: "abcd",
+      // const newUser: User = {
+      //   userId: "1",
+      //   email: "a@a.com",
+      //   name: "Park",
+      //   profile: "abcd",
+      // };
+      // setUser(newUser);
+      // navigate("/tree/1");
+
+      const loginReqDto: LoginReqDto = {
+        email,
+        password,
       };
-      setUser(newUser);
-      navigate("/tree/1");
+
+      try {
+        const response = await login(loginReqDto);
+        console.log(response);
+      } catch (e) {
+        console.log(e);
+      }
     } else {
       setLoginPhase(true);
     }
-  }, [isLoginPhase, setUser]);
+  }, [isLoginPhase, setUser, email, password]);
 
   const handleClickBackButton = useCallback(() => {
     setEmail("");
