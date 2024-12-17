@@ -2,7 +2,7 @@ import { ChangeEventHandler, useCallback, useMemo, useState } from "react";
 import styles from "./NewCardPage.module.css";
 import { cardImgs, LetterBase } from "@/features";
 import { Editor } from "@/widgets";
-import { MainButton } from "@/shared";
+import { CheckBox, MainButton } from "@/shared";
 import { useNavigate, useParams } from "react-router-dom";
 
 type NewCardPhase = "img" | "title";
@@ -16,6 +16,7 @@ export default function NewCardPage() {
   const [nickname, setNickname] = useState("");
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("<p></p>");
+  const [isPrivate, setPrivate] = useState(false);
 
   const canSubmit = useMemo(() => {
     return (
@@ -54,6 +55,10 @@ export default function NewCardPage() {
 
   const handleChangeContent = useCallback((value: string) => {
     setContent(value);
+  }, []);
+
+  const handleCheckPrivate = useCallback((value: boolean) => {
+    setPrivate(value);
   }, []);
 
   const handleClickSubmit = useCallback(() => {
@@ -105,6 +110,13 @@ export default function NewCardPage() {
         <Editor onChange={handleChangeContent} defaultContent="<p></p>" />
       </div>
       <div className={styles["writer-wrapper"]}>
+        <div className={styles["check-box-wrapper"]}>
+          <CheckBox
+            label="비밀 메시지"
+            value={isPrivate}
+            onChange={handleCheckPrivate}
+          />
+        </div>
         <input
           type="text"
           className={`${styles.nickname} text-sm`}
