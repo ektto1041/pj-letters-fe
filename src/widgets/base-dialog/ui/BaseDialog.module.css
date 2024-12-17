@@ -1,0 +1,42 @@
+.wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 20;
+  width: 100%;
+  height: 100%;
+  background-color: var(--color-gray-900-50);
+  animation: darker 0.5s;
+}
+
+.container {
+  position: absolute;
+  top: 15dvh;
+  left: calc(50% - 150px);
+  width: 300px;
+  background-color: var(--color-gray-50);
+  border-radius: 8px;
+  box-shadow: 0 0 4px var(--color-gray-50);
+  animation: slideIn 0.5s;
+  overflow: hidden;
+}
+
+@keyframes darker {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  0% {
+    transform: translateY(-10%);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
+}
