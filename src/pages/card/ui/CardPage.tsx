@@ -25,6 +25,7 @@ export default function CardPage() {
       nickname: "Park",
       sticker: 1,
       createdAt: "2024-12-16",
+      private: false,
     });
   }, []);
 
