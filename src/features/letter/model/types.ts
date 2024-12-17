@@ -6,4 +6,5 @@ export interface Letter {
   nickname: string;
   createdAt: string;
   sticker: number;
+  private: boolean;
 }
