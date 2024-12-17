@@ -45,7 +45,7 @@
 }
 
 .nickname {
-  width: 150px;
+  flex: 150px 0 0;
   padding: 4px;
   padding-left: 8px;
   padding-right: 8px;
@@ -77,7 +77,11 @@
 
 .writer-wrapper {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
+}
+
+.check-box-wrapper {
+  flex-grow: 1;
 }
 
 .submit-wrapper {
