@@ -6,6 +6,22 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: "Ownglyph_ParkDaHyun";
+  src: url("https://fastly.jsdelivr.net/gh/projectnoonnu/2411-3@1.0/Ownglyph_ParkDaHyun.woff2")
+    format("woff2");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "RixXladywatermelonR";
+  src: url("https://fastly.jsdelivr.net/gh/projectnoonnu/2408-4@1.0/RixXladywatermelonR.woff2")
+    format("woff2");
+  font-weight: normal;
+  font-style: normal;
+}
+
 :root {
   --color-gray-50: #fff9f9;
   --color-gray-100: #e5dfdf;
@@ -54,7 +70,7 @@
   --font-header-h1: 36px;
   --line-height-header-h1: 52px;
 
-  font-family: "SF_HambakSnow";
+  font-family: "RixXladywatermelonR";
 }
 
 html,
