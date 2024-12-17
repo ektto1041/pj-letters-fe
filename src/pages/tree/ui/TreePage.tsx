@@ -184,6 +184,18 @@ export default function TreePage() {
         </div>
       </div>
       <div className={styles.content}>
+        <div className={styles["arrow-button-box"]}>
+          {page > 0 && (
+            <button className={styles.prev} onClick={handleClickPrevPage}>
+              <img src={CircleArrowLImg} alt="LeftArrowImg" />
+            </button>
+          )}
+          {hasNextPage && (
+            <button className={styles.next} onClick={handleClickNextPage}>
+              <img src={CircleArrowRImg} alt="RightArrowImg" />
+            </button>
+          )}
+        </div>
         <div className={styles["img-wrapper"]}>
           <img src={TreeImg} alt="tree" />
           {letters.slice(5 * page, 5 * page + 5).map((letter, i) => (
@@ -204,18 +216,6 @@ export default function TreePage() {
           ))}
         </div>
         <div className={styles["button-box"]}>
-          <div className={styles["arrow-button-box"]}>
-            {page > 0 && (
-              <button className={styles.prev} onClick={handleClickPrevPage}>
-                <img src={CircleArrowLImg} alt="LeftArrowImg" />
-              </button>
-            )}
-            {hasNextPage && (
-              <button className={styles.next} onClick={handleClickNextPage}>
-                <img src={CircleArrowRImg} alt="RightArrowImg" />
-              </button>
-            )}
-          </div>
           {isMyTree ? (
             <>
               <TextButton onClick={handleClickMyInfo}>비밀번호 변경</TextButton>
