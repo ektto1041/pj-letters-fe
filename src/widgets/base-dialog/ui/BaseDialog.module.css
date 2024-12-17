@@ -19,11 +19,6 @@
   box-shadow: 0 0 4px var(--color-gray-50);
   animation: slideIn 0.5s;
   overflow: hidden;
-
-  @media screen and (min-width: 501px) {
-    left: calc(50% - 200px);
-    width: 400px;
-  }
 }
 
 @keyframes darker {

@@ -21,12 +21,6 @@ export default function SimpleDialog({
       <div className={styles.container}>
         <div className={`${styles.message} text-md`}>{message}</div>
         <div className={styles["button-box"]}>
-          <button
-            className={`${styles.positive} text-md`}
-            onClick={onClickPositive}
-          >
-            {positiveLabel}
-          </button>
           {onClickNegative && (
             <button
               className={`${styles.negative} text-md`}
@@ -35,6 +29,12 @@ export default function SimpleDialog({
               {negativeLabel}
             </button>
           )}
+          <button
+            className={`${styles.positive} text-md`}
+            onClick={onClickPositive}
+          >
+            {positiveLabel}
+          </button>
         </div>
       </div>
     </BaseDialog>
