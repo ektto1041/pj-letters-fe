@@ -1,0 +1,21 @@
+.message {
+  padding: 16px;
+  color: var(--color-gray-900);
+}
+
+.button-box {
+  display: flex;
+
+  & > button {
+    padding: 16px;
+    flex-grow: 1;
+  }
+}
+
+.positive {
+  color: var(--color-gray-900);
+}
+
+.negative {
+  color: var(--color-primary);
+}
