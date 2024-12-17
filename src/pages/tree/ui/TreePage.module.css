@@ -99,8 +99,9 @@
 
 .arrow-button-box {
   position: absolute;
+  z-index: 3;
   left: 0;
-  bottom: 120px;
+  bottom: calc(50% - 20px);
   width: 100%;
   padding: 16px;
 
