@@ -4,7 +4,7 @@ import { Header, InfoModal } from "@/widgets";
 import TreeImg from "@assets/tree.svg";
 import { MainButton, TextButton } from "@/shared";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { cardImgs, Letter, useUserState } from "@/features";
+import { cardGrayImgs, cardImgs, Letter, useUserState } from "@/features";
 import CircleArrowLImg from "@assets/circle-arrow-l.svg";
 import CircleArrowRImg from "@assets/circle-arrow-r.svg";
 
@@ -75,6 +75,7 @@ export default function TreePage() {
         createdAt: "2024-12-13",
         nickname: "Writer 1",
         sticker: 1,
+        private: false,
       },
       {
         letterId: "2",
@@ -84,6 +85,7 @@ export default function TreePage() {
         createdAt: "2024-12-13",
         nickname: "Writer 1",
         sticker: 2,
+        private: true,
       },
       {
         letterId: "3",
@@ -93,6 +95,7 @@ export default function TreePage() {
         createdAt: "2024-12-13",
         nickname: "Writer 1",
         sticker: 3,
+        private: false,
       },
       {
         letterId: "4",
@@ -102,6 +105,7 @@ export default function TreePage() {
         createdAt: "2024-12-13",
         nickname: "Writer 1",
         sticker: 4,
+        private: false,
       },
       {
         letterId: "5",
@@ -111,6 +115,7 @@ export default function TreePage() {
         createdAt: "2024-12-13",
         nickname: "Writer 1",
         sticker: 5,
+        private: true,
       },
       {
         letterId: "6",
@@ -120,6 +125,7 @@ export default function TreePage() {
         createdAt: "2024-12-13",
         nickname: "Writer 1",
         sticker: 6,
+        private: false,
       },
     ];
 
@@ -186,7 +192,14 @@ export default function TreePage() {
               key={letter.letterId}
               onClick={() => handleClickLetter(letter.letterId)}
             >
-              <img src={cardImgs[letter.sticker - 1]} alt="CardImg" />
+              <img
+                src={
+                  letter.private
+                    ? cardGrayImgs[letter.sticker - 1]
+                    : cardImgs[letter.sticker - 1]
+                }
+                alt="CardImg"
+              />
             </div>
           ))}
         </div>
