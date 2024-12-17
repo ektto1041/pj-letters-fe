@@ -2,7 +2,10 @@ import { authAxios, noAuthAxios } from "@/shared";
 import type { LoginReqDto, SignupReqDto } from "../model/types";
 
 export const login = async (loginReqDto: LoginReqDto) => {
-  const response = await noAuthAxios.post<unknown>(`/auth/login`, loginReqDto);
+  const response = await noAuthAxios.post<unknown>(
+    `api/auth/login`,
+    loginReqDto
+  );
 
   return response.data;
 };

@@ -6,7 +6,7 @@ export interface User {
 }
 
 export interface LoginReqDto {
-  email: string;
+  username: string;
   password: string;
 }
 

@@ -35,7 +35,7 @@ export default function IntroPage() {
       // navigate("/tree/1");
 
       const loginReqDto: LoginReqDto = {
-        email,
+        username: email,
         password,
       };
 
