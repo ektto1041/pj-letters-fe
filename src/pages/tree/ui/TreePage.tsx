@@ -24,6 +24,33 @@ import CircleArrowLImg from "@assets/circle-arrow-l.svg";
 import CircleArrowRImg from "@assets/circle-arrow-r.svg";
 import { AxiosError } from "axios";
 
+type Time = {
+  days: number;
+  hours: number;
+  minutes: number;
+  seconds: number;
+};
+
+const calcTime: () => Time = () => {
+  const christmasDay = new Date("2024-12-25T00:00:00");
+
+  const now = new Date();
+  const difference = christmasDay.getTime() - now.getTime();
+
+  if (difference > 0) {
+    const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+    const hours = Math.floor(
+      (difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+    );
+    const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+    return { days, hours, minutes, seconds };
+  } else {
+    return { days: 0, hours: 0, minutes: 0, seconds: 0 };
+  }
+};
+
 export default function TreePage() {
   const { userId } = useParams();
   const navigate = useNavigate();
@@ -33,12 +60,7 @@ export default function TreePage() {
     return String(userId) === String(user?.userId);
   }, [userId, user]);
 
-  const [timeLeft, setTimeLeft] = useState({
-    days: 0,
-    hours: 0,
-    minutes: 0,
-    seconds: 0,
-  });
+  const [timeLeft, setTimeLeft] = useState<Time>(calcTime());
   const isXmas = useMemo(() => {
     return (
       timeLeft.days === 0 &&
@@ -177,9 +199,18 @@ export default function TreePage() {
   }, [userId, tree]);
 
   const handleClickLetter = useCallback(
-    (letterId: number) => {
-      if (isXmas) navigate(`/card/${letterId}`);
-      else {
+    (letterId: number, visible: boolean) => {
+      if (!isMyTree && !visible) {
+        setDialog({
+          message: "비밀 메시지는 트리의 주인만 확인할 수 있습니다.",
+          positiveLabel: "확인",
+          onClickPositive: () => {
+            setDialog(null);
+          },
+        });
+      } else if (isXmas) {
+        navigate(`/card/${letterId}`);
+      } else {
         setDialog({
           message: "메시지는 크리스마스부터 열어볼 수 있습니다.",
           positiveLabel: "확인",
@@ -286,7 +317,7 @@ export default function TreePage() {
             <div
               className={`${styles["card-wrapper"]} ${styles[`card${i + 1}`]}`}
               key={letter.letterId}
-              onClick={() => handleClickLetter(letter.letterId)}
+              onClick={() => handleClickLetter(letter.letterId, letter.visible)}
             >
               <img
                 src={
