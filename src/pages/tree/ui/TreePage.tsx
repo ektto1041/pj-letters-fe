@@ -220,7 +220,7 @@ export default function TreePage() {
         });
       }
     },
-    [isXmas]
+    [isXmas, isMyTree]
   );
 
   const handleClickMyInfo = useCallback(() => {
