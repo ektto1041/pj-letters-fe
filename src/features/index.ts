@@ -1,7 +1,13 @@
-export type { Letter, NewLetter } from "./letter";
+export type { Letter, NewLetter, LetterItem } from "./letter";
 export type { Friend } from "./friend";
 export type { User, LoginReqDto, SignupReqDto } from "./user";
-export { createLetter, cardImgs, cardGrayImgs, LetterBase } from "./letter";
+export {
+  createLetter,
+  getLetterById,
+  cardImgs,
+  cardGrayImgs,
+  LetterBase,
+} from "./letter";
 export {
   login,
   signup,
