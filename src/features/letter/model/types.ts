@@ -27,3 +27,15 @@ export interface NewLetter {
   treeId: number;
   visible: boolean;
 }
+
+export interface LetterItem {
+  letterId: number;
+  nickname: string;
+  title: string;
+  content: string;
+  treeId: number;
+  sticker: number;
+  visible: boolean;
+  createdAt: string;
+  modifiedAt: string;
+}

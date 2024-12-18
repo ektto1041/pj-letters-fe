@@ -1,46 +1,54 @@
-import { cardImgs, Letter, LetterBase, useUserState } from "@/features";
+import { cardImgs, getLetterById, LetterBase, LetterItem } from "@/features";
 import styles from "./CardPage.module.css";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { Editor } from "@/widgets";
-import { MainButton } from "@/shared";
+import { Editor, SimpleDialog, SimpleDialogProps } from "@/widgets";
+import { MainButton, Spinner } from "@/shared";
 import { toPng } from "html-to-image";
 
 export default function CardPage() {
   const navigate = useNavigate();
   const { letterId } = useParams();
 
-  const { user } = useUserState();
-
-  const [letter, setLetter] = useState<Letter | null>(null);
+  const [letter, setLetter] = useState<LetterItem | null>(null);
+  const [dialog, setDialog] = useState<SimpleDialogProps | null>(null);
+  const [isLoading, setLoading] = useState(false);
 
   const letterRef = useRef<HTMLDivElement>(null);
 
   const getLetter = useCallback(async (letterId: string) => {
-    setLetter({
-      letterId,
-      treeId: "1",
-      title: "Letter Title",
-      content: "<p>This is Letter</p>",
-      nickname: "Park",
-      sticker: 1,
-      createdAt: "2024-12-16",
-      private: false,
-    });
+    setLoading(true);
+
+    try {
+      const letter = await getLetterById(parseInt(letterId));
+
+      setLetter(letter);
+    } catch (e) {
+      console.log(e);
+
+      // TODO 분기처리
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
   useEffect(() => {
     if (letterId) {
       getLetter(letterId);
     } else {
-      alert("비정상적인 접근입니다.");
-      navigate("/");
+      setDialog({
+        message: "비정상적인 접근입니다.",
+        positiveLabel: "확인",
+        onClickPositive: () => {
+          navigate("/");
+        },
+      });
     }
   }, [letterId]);
 
   const handleClose = useCallback(() => {
-    navigate(`/tree/${user?.userId}`);
-  }, [user]);
+    navigate(-1);
+  }, []);
 
   const handleSave = useCallback(async () => {
     if (!letterRef.current) return;
@@ -86,6 +94,15 @@ export default function CardPage() {
           </div>
         </>
       )}
+
+      {dialog && (
+        <SimpleDialog
+          message={dialog.message}
+          positiveLabel={dialog.positiveLabel}
+          onClickPositive={dialog.onClickPositive}
+        />
+      )}
+      {isLoading && <Spinner />}
     </LetterBase>
   );
 }
