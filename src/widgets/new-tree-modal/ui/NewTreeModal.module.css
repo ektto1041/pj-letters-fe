@@ -1,0 +1,34 @@
+.container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.content {
+  width: 100%;
+  height: 100%;
+  padding: 16px;
+}
+
+.description {
+  margin-bottom: 16px;
+}
+
+.hint {
+  user-select: none;
+  color: var(--color-primary);
+  height: 16px;
+
+  &.hide {
+    opacity: 0;
+  }
+}
+
+.nav-bar {
+  width: 100%;
+  flex: auto 0 0;
+  display: flex;
+  justify-content: flex-end;
+  padding: 16px;
+}
