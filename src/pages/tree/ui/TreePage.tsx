@@ -38,6 +38,15 @@ export default function TreePage() {
     minutes: 0,
     seconds: 0,
   });
+  const isXmas = useMemo(() => {
+    return (
+      timeLeft.days === 0 &&
+      timeLeft.hours === 0 &&
+      timeLeft.minutes === 0 &&
+      timeLeft.seconds === 0
+    );
+  }, [timeLeft]);
+
   const [tree, setTree] = useState<Tree | null>(null);
   const [letters, setLetters] = useState<LetterInTree[]>([]);
   const [page, setPage] = useState(0);
@@ -166,9 +175,21 @@ export default function TreePage() {
     navigate(`/new-card/${userId}/${tree?.treeId}`);
   }, [userId, tree]);
 
-  const handleClickLetter = useCallback((letterId: number) => {
-    navigate(`/card/${letterId}`);
-  }, []);
+  const handleClickLetter = useCallback(
+    (letterId: number) => {
+      if (isXmas) navigate(`/card/${letterId}`);
+      else {
+        setDialog({
+          message: "메시지는 크리스마스부터 열어볼 수 있습니다.",
+          positiveLabel: "확인",
+          onClickPositive: () => {
+            setDialog(null);
+          },
+        });
+      }
+    },
+    [isXmas]
+  );
 
   const handleClickMyInfo = useCallback(() => {
     setMyInfoModalOpen(true);
@@ -207,9 +228,11 @@ export default function TreePage() {
             <div className={`${styles.nickname} text-md`}>{tree.nickname}</div>
           </div>
         )}
-        <div className={styles["timer-wrapper"]}>
-          <div className={`${styles.timer} text-sm`}>{timeLeftStr}</div>
-        </div>
+        {!isXmas && (
+          <div className={styles["timer-wrapper"]}>
+            <div className={`${styles.timer} text-sm`}>{timeLeftStr}</div>
+          </div>
+        )}
       </div>
       <div className={styles.content}>
         <div className={styles["arrow-button-box"]}>
