@@ -1,7 +1,5 @@
 import { Friend } from "@/features";
 import styles from "./FriendItem.module.css";
-import OutgoingMailDisabledImg from "@assets/outgoing-mail-disabled.svg";
-import OutgoingMailImg from "@assets/outgoing-mail.svg";
 import { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -18,14 +16,10 @@ export default function FriendItem({ friend }: FriendItemProps) {
 
   return (
     <div className={styles.container} onClick={handleClick}>
-      <div className={styles["profile-img-wrapper"]}></div>
-      <div className={`${styles.name} text-sm`}>{friend.name}</div>
-      <div className={styles["icon-wrapper"]}>
-        <img
-          src={friend.hasCard ? OutgoingMailImg : OutgoingMailDisabledImg}
-          alt="OutGoingMailImg"
-        />
+      <div className={styles["profile-img-wrapper"]}>
+        <img src={friend.profile} alt="ProfileImg" />
       </div>
+      <div className={`${styles.name} text-sm`}>{friend.nickname}</div>
     </div>
   );
 }

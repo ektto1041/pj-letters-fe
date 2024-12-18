@@ -18,3 +18,4 @@ export {
 } from "./user";
 export { getTreeByUserId, createTree, updateTreeName } from "./tree";
 export type { Tree } from "./tree";
+export { getFriends } from "./friend";

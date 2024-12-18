@@ -1,5 +1,6 @@
 export interface Friend {
-  userId: string;
-  name: string;
-  hasCard: boolean;
+  username: string;
+  nickname: string;
+  profile: string;
+  userId: number;
 }
