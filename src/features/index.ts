@@ -1,8 +1,9 @@
-export type { Letter, LetterInTree } from "./letter";
+export type { Letter, LetterInTree, NewLetter } from "./letter";
 export type { Friend } from "./friend";
 export type { User, LoginReqDto, SignupReqDto } from "./user";
 export {
   getLettersByTreeId,
+  createLetter,
   cardImgs,
   cardGrayImgs,
   LetterBase,

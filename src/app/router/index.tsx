@@ -29,7 +29,7 @@ const router = createBrowserRouter([
         element: <FriendListPage />,
       },
       {
-        path: "/new-card/:userId",
+        path: "/new-card/:userId/:treeId",
         element: <NewCardPage />,
       },
       {

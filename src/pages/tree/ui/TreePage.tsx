@@ -163,8 +163,8 @@ export default function TreePage() {
   }, []);
 
   const handleClickWrite = useCallback(() => {
-    navigate(`/new-card/${userId}`);
-  }, [userId]);
+    navigate(`/new-card/${userId}/${tree?.treeId}`);
+  }, [userId, tree]);
 
   const handleClickLetter = useCallback((letterId: number) => {
     navigate(`/card/${letterId}`);

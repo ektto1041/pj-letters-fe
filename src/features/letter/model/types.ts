@@ -18,3 +18,12 @@ export interface LetterInTree {
   createdAt: string;
   modifiedAt: string;
 }
+
+export interface NewLetter {
+  title: string;
+  content: string;
+  sticker: number;
+  name: string;
+  treeId: number;
+  visible: boolean;
+}
