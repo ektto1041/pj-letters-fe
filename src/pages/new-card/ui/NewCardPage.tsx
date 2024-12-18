@@ -1,14 +1,14 @@
 import { ChangeEventHandler, useCallback, useMemo, useState } from "react";
 import styles from "./NewCardPage.module.css";
-import { cardImgs, LetterBase } from "@/features";
-import { Editor } from "@/widgets";
-import { CheckBox, MainButton } from "@/shared";
+import { cardImgs, createLetter, LetterBase, NewLetter } from "@/features";
+import { Editor, SimpleDialog, SimpleDialogProps } from "@/widgets";
+import { CheckBox, MainButton, Spinner } from "@/shared";
 import { useNavigate, useParams } from "react-router-dom";
 
 type NewCardPhase = "img" | "title";
 
 export default function NewCardPage() {
-  const { userId } = useParams();
+  const { userId, treeId } = useParams();
   const navigate = useNavigate();
 
   const [phase, setPhase] = useState<NewCardPhase>("title");
@@ -17,6 +17,8 @@ export default function NewCardPage() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("<p></p>");
   const [isPrivate, setPrivate] = useState(false);
+  const [dialog, setDialog] = useState<SimpleDialogProps | null>(null);
+  const [isLoading, setLoading] = useState(false);
 
   const canSubmit = useMemo(() => {
     return (
@@ -25,11 +27,17 @@ export default function NewCardPage() {
   }, [phase, nickname, title]);
 
   const handleClose = useCallback(() => {
-    const answer = confirm("작성한 편지가 사라집니다. 정말 나가시겠습니까?");
-
-    if (answer) {
-      navigate(`/tree/${userId}`);
-    }
+    setDialog({
+      message: "작성한 편지가 사라집니다. 정말 나가시겠습니까?",
+      positiveLabel: "나가기",
+      negativeLabel: "취소",
+      onClickPositive: () => {
+        navigate(`/tree/${userId}`);
+      },
+      onClickNegative: () => {
+        setDialog(null);
+      },
+    });
   }, [userId]);
 
   const handleClickSelectedImg = useCallback(() => {
@@ -61,15 +69,60 @@ export default function NewCardPage() {
     setPrivate(value);
   }, []);
 
-  const handleClickSubmit = useCallback(() => {
-    const answer = confirm(
-      "한 번 작성한 편지는 수정할 수 없습니다. 전송하시겠습니까?"
-    );
+  const submitLetter = useCallback(async () => {
+    if (!treeId) return;
 
-    if (answer) {
-      navigate(`/tree/${userId}`);
+    const newLetter: NewLetter = {
+      title,
+      content,
+      sticker: selectedImg,
+      name: nickname,
+      treeId: parseInt(treeId),
+      visible: !isPrivate,
+    };
+
+    setLoading(true);
+
+    try {
+      await createLetter(newLetter);
+
+      setDialog({
+        message: "작성이 완료되었습니다.",
+        positiveLabel: "확인",
+        onClickPositive: () => {
+          navigate(`/tree/${userId}`);
+        },
+      });
+    } catch (e) {
+      console.log(e);
+
+      setDialog({
+        message: "작성에 실패했습니다.",
+        positiveLabel: "확인",
+        onClickPositive: () => {
+          setDialog(null);
+        },
+      });
+    } finally {
+      setLoading(false);
     }
-  }, [userId]);
+  }, [userId, title, content, selectedImg, nickname, treeId, isPrivate]);
+
+  const handleClickSubmit = useCallback(() => {
+    setDialog({
+      message:
+        "한 번 작성한 편지는 수정하거나 삭제할 수 없습니다. 전송하시겠습니까?",
+      positiveLabel: "전송",
+      negativeLabel: "취소",
+      onClickPositive: () => {
+        setDialog(null);
+        submitLetter();
+      },
+      onClickNegative: () => {
+        setDialog(null);
+      },
+    });
+  }, [submitLetter]);
 
   return (
     <LetterBase onClose={handleClose}>
@@ -135,6 +188,17 @@ export default function NewCardPage() {
           전송
         </MainButton>
       </div>
+
+      {dialog && (
+        <SimpleDialog
+          message={dialog.message}
+          positiveLabel={dialog.positiveLabel}
+          negativeLabel={dialog.negativeLabel}
+          onClickPositive={dialog.onClickPositive}
+          onClickNegative={dialog.onClickNegative}
+        />
+      )}
+      {isLoading && <Spinner />}
     </LetterBase>
   );
 }
