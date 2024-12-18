@@ -13,8 +13,9 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   cardGrayImgs,
   cardImgs,
+  getLettersByTreeId,
   getTreeByUserId,
-  Letter,
+  LetterInTree,
   Tree,
   useUserState,
 } from "@/features";
@@ -38,7 +39,7 @@ export default function TreePage() {
     seconds: 0,
   });
   const [tree, setTree] = useState<Tree | null>(null);
-  const [letters, setLetters] = useState<Letter[]>([]);
+  const [letters, setLetters] = useState<LetterInTree[]>([]);
   const [page, setPage] = useState(0);
   const [isMyInfoModalOpen, setMyInfoModalOpen] = useState(false);
   const [isNewTreeModalOpen, setNewTreeModalOpen] = useState(false);
@@ -112,8 +113,10 @@ export default function TreePage() {
 
     try {
       const tree = await getTreeByUserId(userId);
+      const letters = await getLettersByTreeId(tree.treeId);
 
       setTree(tree);
+      setLetters(letters);
     } catch (e) {
       const error = e as AxiosError;
       console.log(error);
@@ -162,7 +165,7 @@ export default function TreePage() {
     navigate(`/new-card/${userId}`);
   }, [userId]);
 
-  const handleClickLetter = useCallback((letterId: string) => {
+  const handleClickLetter = useCallback((letterId: number) => {
     navigate(`/card/${letterId}`);
   }, []);
 
@@ -185,9 +188,9 @@ export default function TreePage() {
         {tree && (
           <div className={styles["profile-wrapper"]}>
             <div className={styles["profile-img-wrapper"]}>
-              <img src={tree.user?.profile} alt="ProfileImage" />
+              <img src={tree.profile} alt="ProfileImage" />
             </div>
-            <div className={styles.nickname}>{tree.user?.nickname}</div>
+            <div className={`${styles.nickname} text-md`}>{tree.nickname}</div>
           </div>
         )}
         <div className={styles["timer-wrapper"]}>
@@ -217,7 +220,7 @@ export default function TreePage() {
             >
               <img
                 src={
-                  letter.private
+                  !letter.visible
                     ? cardGrayImgs[letter.sticker - 1]
                     : cardImgs[letter.sticker - 1]
                 }
