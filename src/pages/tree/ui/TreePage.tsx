@@ -17,6 +17,7 @@ import {
   getTreeByUserId,
   LetterInTree,
   Tree,
+  uploadImage,
   useUserState,
 } from "@/features";
 import CircleArrowLImg from "@assets/circle-arrow-l.svg";
@@ -211,6 +212,35 @@ export default function TreePage() {
     setUpdateTreeModalOpen(true);
   }, []);
 
+  const handleClickProfileImg = useCallback(() => {
+    const input = document.createElement("input");
+    input.setAttribute("type", "file");
+    input.setAttribute("accept", "image/*");
+    input.click();
+    input.onchange = async () => {
+      if (input.files) {
+        const file = input.files[0];
+
+        if (file.size > 2 * 1000 * 1000) {
+          setDialog({
+            message: "2MB 이하의 이미지 파일만 등록할 수 있습니다.",
+            positiveLabel: "확인",
+            onClickPositive: () => {
+              setDialog(null);
+            },
+          });
+        } else {
+          const formData = new FormData();
+          formData.append("images", file);
+
+          const url = await uploadImage(formData);
+
+          console.log(url);
+        }
+      }
+    };
+  }, []);
+
   return (
     <div className={styles.container}>
       <div className={styles.ground} />
@@ -222,7 +252,10 @@ export default function TreePage() {
         />
         {tree && (
           <div className={styles["profile-wrapper"]}>
-            <div className={styles["profile-img-wrapper"]}>
+            <div
+              className={styles["profile-img-wrapper"]}
+              onClick={isMyTree ? handleClickProfileImg : undefined}
+            >
               <img src={tree.profile} alt="ProfileImage" />
             </div>
             <div className={`${styles.nickname} text-md`}>{tree.nickname}</div>
