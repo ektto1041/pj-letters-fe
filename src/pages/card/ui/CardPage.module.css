@@ -21,8 +21,9 @@
 }
 
 .nickname {
-  width: auto;
+  width: 100%;
   display: inline;
+  text-align: end;
 }
 
 .button-wrapper {
