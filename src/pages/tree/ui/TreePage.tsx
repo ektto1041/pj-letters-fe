@@ -13,8 +13,9 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   cardGrayImgs,
   cardImgs,
+  getLettersByTreeId,
   getTreeByUserId,
-  Letter,
+  LetterInTree,
   Tree,
   useUserState,
 } from "@/features";
@@ -38,10 +39,11 @@ export default function TreePage() {
     seconds: 0,
   });
   const [tree, setTree] = useState<Tree | null>(null);
-  const [letters, setLetters] = useState<Letter[]>([]);
+  const [letters, setLetters] = useState<LetterInTree[]>([]);
   const [page, setPage] = useState(0);
   const [isMyInfoModalOpen, setMyInfoModalOpen] = useState(false);
   const [isNewTreeModalOpen, setNewTreeModalOpen] = useState(false);
+  const [isUpdateTreeModalOpen, setUpdateTreeModalOpen] = useState(false);
   const [dialog, setDialog] = useState<SimpleDialogProps | null>(null);
   const [isLoading, setLoading] = useState(false);
 
@@ -112,14 +114,16 @@ export default function TreePage() {
 
     try {
       const tree = await getTreeByUserId(userId);
+      const letters = await getLettersByTreeId(tree.treeId);
 
       setTree(tree);
+      setLetters(letters);
     } catch (e) {
       const error = e as AxiosError;
       console.log(error);
 
       const hasNoTree = error.status === 400;
-      if (hasNoTree) {
+      if (hasNoTree && isMyTree) {
         setNewTreeModalOpen(true);
       } else {
         setDialog({
@@ -133,7 +137,7 @@ export default function TreePage() {
     } finally {
       setLoading(false);
     }
-  }, [user, userId]);
+  }, [user, userId, isMyTree]);
 
   useEffect(() => {
     const timer = setTimer();
@@ -162,7 +166,7 @@ export default function TreePage() {
     navigate(`/new-card/${userId}/${tree?.treeId}`);
   }, [userId, tree]);
 
-  const handleClickLetter = useCallback((letterId: string) => {
+  const handleClickLetter = useCallback((letterId: number) => {
     navigate(`/card/${letterId}`);
   }, []);
 
@@ -174,6 +178,18 @@ export default function TreePage() {
     setMyInfoModalOpen(false);
   }, []);
 
+  const handleCloseNewTreeModal = useCallback(() => {
+    setNewTreeModalOpen(false);
+  }, []);
+
+  const handleCloseUpdateTreeModal = useCallback(() => {
+    setUpdateTreeModalOpen(false);
+  }, []);
+
+  const handleClickHeader = useCallback(() => {
+    setUpdateTreeModalOpen(true);
+  }, []);
+
   return (
     <div className={styles.container}>
       <div className={styles.ground} />
@@ -181,13 +197,14 @@ export default function TreePage() {
         <Header
           title={`${tree?.treeName || "이름 없는 트리"}`}
           onClickBackButton={isMyTree ? undefined : handleClickBackButton}
+          onClickHeader={isMyTree ? handleClickHeader : undefined}
         />
         {tree && (
           <div className={styles["profile-wrapper"]}>
             <div className={styles["profile-img-wrapper"]}>
-              <img src={tree.user?.profile} alt="ProfileImage" />
+              <img src={tree.profile} alt="ProfileImage" />
             </div>
-            <div className={styles.nickname}>{tree.user?.nickname}</div>
+            <div className={`${styles.nickname} text-md`}>{tree.nickname}</div>
           </div>
         )}
         <div className={styles["timer-wrapper"]}>
@@ -217,9 +234,9 @@ export default function TreePage() {
             >
               <img
                 src={
-                  letter.private
-                    ? cardGrayImgs[letter.sticker - 1]
-                    : cardImgs[letter.sticker - 1]
+                  !letter.visible
+                    ? cardGrayImgs[letter.sticker]
+                    : cardImgs[letter.sticker]
                 }
                 alt="CardImg"
               />
@@ -250,7 +267,10 @@ export default function TreePage() {
         />
       )}
       {isMyInfoModalOpen && <InfoModal onClose={handleCloseMyInfoModal} />}
-      {isNewTreeModalOpen && <NewTreeModal />}
+      {isNewTreeModalOpen && <NewTreeModal onClose={handleCloseNewTreeModal} />}
+      {isUpdateTreeModalOpen && (
+        <NewTreeModal isUpdate onClose={handleCloseUpdateTreeModal} />
+      )}
       {isLoading && <Spinner />}
     </div>
   );

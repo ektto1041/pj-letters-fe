@@ -4,9 +4,14 @@ import ArrowBackImg from "@assets/arrow-back.svg";
 interface HeaderProps {
   onClickBackButton?: () => void;
   title: string;
+  onClickHeader?: () => void;
 }
 
-export default function Header({ title, onClickBackButton }: HeaderProps) {
+export default function Header({
+  title,
+  onClickBackButton,
+  onClickHeader,
+}: HeaderProps) {
   return (
     <div className={styles.container}>
       {onClickBackButton ? (
@@ -19,7 +24,14 @@ export default function Header({ title, onClickBackButton }: HeaderProps) {
       ) : (
         <div className={styles.empty} />
       )}
-      <div className={`${styles.title} text-md`}>{title}</div>
+      <div
+        className={`${styles.title} text-md ${
+          onClickHeader ? styles.pointer : ""
+        }`}
+        onClick={onClickHeader}
+      >
+        {title}
+      </div>
     </div>
   );
 }

@@ -9,6 +9,16 @@ export interface Letter {
   private: boolean;
 }
 
+export interface LetterInTree {
+  letterId: number;
+  nickname: string;
+  title: string;
+  sticker: number;
+  visible: boolean;
+  createdAt: string;
+  modifiedAt: string;
+}
+
 export interface NewLetter {
   title: string;
   content: string;

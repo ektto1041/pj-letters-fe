@@ -1,9 +1,10 @@
-import { Letter } from "@/features/letter";
-import { User } from "@/features/user";
-
 export interface Tree {
-  treeId: string;
+  treeId: number;
+  userId: number;
+  username: string;
+  nickname: string;
   treeName: string;
-  user: Omit<User, "token">;
-  letters: Letter[];
+  profile: string;
+  createdAt: string;
+  modifiedAt: string;
 }

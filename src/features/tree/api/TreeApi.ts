@@ -14,3 +14,11 @@ export const createTree = async (treeName: string) => {
 
   return response.data;
 };
+
+export const updateTreeName = async (userId: string, treeName: string) => {
+  const response = await authAxios.put<unknown>(`api/tree/${userId}`, {
+    treeName,
+  });
+
+  return response.data;
+};
