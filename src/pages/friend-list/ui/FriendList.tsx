@@ -36,6 +36,14 @@ export default function FriendList() {
       );
     } catch (e) {
       console.log(e);
+
+      setDialog({
+        message: "친구목록을 불러올 수 없습니다.",
+        positiveLabel: "확인",
+        onClickPositive: () => {
+          navigate(-1);
+        },
+      });
     } finally {
       setLoading(false);
     }

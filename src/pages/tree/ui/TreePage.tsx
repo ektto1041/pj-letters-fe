@@ -123,7 +123,7 @@ export default function TreePage() {
       console.log(error);
 
       const hasNoTree = error.status === 400;
-      if (hasNoTree) {
+      if (hasNoTree && isMyTree) {
         setNewTreeModalOpen(true);
       } else {
         setDialog({
@@ -137,7 +137,7 @@ export default function TreePage() {
     } finally {
       setLoading(false);
     }
-  }, [user, userId]);
+  }, [user, userId, isMyTree]);
 
   useEffect(() => {
     const timer = setTimer();
