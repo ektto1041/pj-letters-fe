@@ -1,9 +1,10 @@
-import { Header } from "@/widgets";
+import { Header, SimpleDialog, SimpleDialogProps } from "@/widgets";
 import styles from "./FriendList.module.css";
 import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Friend, useUserState } from "@/features";
+import { Friend, getFriends, useUserState } from "@/features";
 import FriendItem from "./FriendItem";
+import { Spinner } from "@/shared";
 
 export default function FriendList() {
   const navigate = useNavigate();
@@ -11,30 +12,38 @@ export default function FriendList() {
   const { user } = useUserState();
 
   const [friends, setFriends] = useState<Friend[]>([]);
+  const [isLoading, setLoading] = useState(false);
+  const [dialog, setDialog] = useState<SimpleDialogProps | null>(null);
 
-  const getFriends = useCallback(async () => {
-    setFriends([
-      {
-        userId: "1",
-        name: "Friend 1",
-        hasCard: false,
-      },
-      {
-        userId: "2",
-        name: "Friend 2",
-        hasCard: true,
-      },
-      {
-        userId: "3",
-        name: "Friend 3",
-        hasCard: false,
-      },
-    ]);
-  }, []);
+  const getFriendList = useCallback(async () => {
+    if (!user) {
+      setDialog({
+        message: "로그인이 필요한 서비스입니다.",
+        positiveLabel: "확인",
+        onClickPositive: () => {
+          navigate("/");
+        },
+      });
+    }
+
+    setLoading(true);
+
+    try {
+      const friends = await getFriends();
+
+      setFriends(
+        friends.filter((friend) => String(friend.userId) !== user!.userId)
+      );
+    } catch (e) {
+      console.log(e);
+    } finally {
+      setLoading(false);
+    }
+  }, [user]);
 
   useEffect(() => {
-    getFriends();
-  }, []);
+    getFriendList();
+  }, [getFriendList]);
 
   const handleClickBackButton = useCallback(() => {
     navigate(`/tree/${user?.userId}`);
@@ -55,35 +64,17 @@ export default function FriendList() {
           {friends.map((friend, i) => (
             <FriendItem key={i} friend={friend} />
           ))}
-          {friends.map((friend, i) => (
-            <FriendItem key={i} friend={friend} />
-          ))}
-          {friends.map((friend, i) => (
-            <FriendItem key={i} friend={friend} />
-          ))}
-          {friends.map((friend, i) => (
-            <FriendItem key={i} friend={friend} />
-          ))}
-          {friends.map((friend, i) => (
-            <FriendItem key={i} friend={friend} />
-          ))}
-          {friends.map((friend, i) => (
-            <FriendItem key={i} friend={friend} />
-          ))}
-          {friends.map((friend, i) => (
-            <FriendItem key={i} friend={friend} />
-          ))}
-          {friends.map((friend, i) => (
-            <FriendItem key={i} friend={friend} />
-          ))}
-          {friends.map((friend, i) => (
-            <FriendItem key={i} friend={friend} />
-          ))}
-          {friends.map((friend, i) => (
-            <FriendItem key={i} friend={friend} />
-          ))}
         </div>
       </div>
+
+      {dialog && (
+        <SimpleDialog
+          message={dialog.message}
+          positiveLabel={dialog.positiveLabel}
+          onClickPositive={dialog.onClickPositive}
+        />
+      )}
+      {isLoading && <Spinner />}
     </div>
   );
 }
