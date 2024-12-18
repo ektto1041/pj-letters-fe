@@ -15,10 +15,12 @@ import {
   cardImgs,
   getTreeByUserId,
   Letter,
+  Tree,
   useUserState,
 } from "@/features";
 import CircleArrowLImg from "@assets/circle-arrow-l.svg";
 import CircleArrowRImg from "@assets/circle-arrow-r.svg";
+import { AxiosError } from "axios";
 
 export default function TreePage() {
   const { userId } = useParams();
@@ -26,7 +28,7 @@ export default function TreePage() {
   const { user } = useUserState();
 
   const isMyTree = useMemo(() => {
-    return userId === user?.userId;
+    return String(userId) === String(user?.userId);
   }, [userId, user]);
 
   const [timeLeft, setTimeLeft] = useState({
@@ -35,6 +37,7 @@ export default function TreePage() {
     minutes: 0,
     seconds: 0,
   });
+  const [tree, setTree] = useState<Tree | null>(null);
   const [letters, setLetters] = useState<Letter[]>([]);
   const [page, setPage] = useState(0);
   const [isMyInfoModalOpen, setMyInfoModalOpen] = useState(false);
@@ -109,10 +112,13 @@ export default function TreePage() {
 
     try {
       const tree = await getTreeByUserId(userId);
-    } catch (e) {
-      console.log(e);
 
-      const hasNoTree = true;
+      setTree(tree);
+    } catch (e) {
+      const error = e as AxiosError;
+      console.log(error);
+
+      const hasNoTree = error.status === 400;
       if (hasNoTree) {
         setNewTreeModalOpen(true);
       } else {
@@ -173,9 +179,17 @@ export default function TreePage() {
       <div className={styles.ground} />
       <div className={styles.header}>
         <Header
-          title={`${isMyTree ? "나의 트리" : `의 트리`}`}
+          title={`${tree?.treeName || "이름 없는 트리"}`}
           onClickBackButton={isMyTree ? undefined : handleClickBackButton}
         />
+        {tree && (
+          <div className={styles["profile-wrapper"]}>
+            <div className={styles["profile-img-wrapper"]}>
+              <img src={tree.user?.profile} alt="ProfileImage" />
+            </div>
+            <div className={styles.nickname}>{tree.user?.nickname}</div>
+          </div>
+        )}
         <div className={styles["timer-wrapper"]}>
           <div className={`${styles.timer} text-sm`}>{timeLeftStr}</div>
         </div>
