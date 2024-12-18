@@ -1,5 +1,14 @@
 export type { Letter } from "./letter";
 export type { Friend } from "./friend";
-export type { User } from "./user";
+export type { User, LoginReqDto, SignupReqDto } from "./user";
 export { cardImgs, cardGrayImgs, LetterBase } from "./letter";
-export { useUserState } from "./user";
+export {
+  login,
+  signup,
+  sendAuthCode,
+  checkAuthCode,
+  logout,
+  useUserState,
+} from "./user";
+export { getTreeByUserId, createTree } from "./tree";
+export type { Tree } from "./tree";

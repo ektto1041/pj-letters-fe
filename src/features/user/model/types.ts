@@ -1,6 +1,19 @@
 export interface User {
-  userId: string;
+  token: string;
   email: string;
-  name: string;
+  nickname: string;
+  profile: string;
+  userId: string;
+}
+
+export interface LoginReqDto {
+  username: string;
+  password: string;
+}
+
+export interface SignupReqDto {
+  username: string;
+  password: string;
+  nickname: string;
   profile: string;
 }

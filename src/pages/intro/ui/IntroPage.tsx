@@ -1,12 +1,17 @@
-import { MainButton, MainInput, TextButton } from "@/shared";
+import { MainButton, MainInput, Spinner, TextButton } from "@/shared";
 import styles from "./IntroPage.module.css";
 import TreeImg from "@assets/tree.svg";
-import { Header, SignupModal } from "@/widgets";
+import {
+  Header,
+  SignupModal,
+  SimpleDialog,
+  SimpleDialogProps,
+} from "@/widgets";
 import { ChangeEventHandler, useCallback, useMemo, useState } from "react";
 import EmailImg from "@assets/email.svg";
 import LockImg from "@assets/lock.svg";
 import { useNavigate } from "react-router-dom";
-import { User, useUserState } from "@/features";
+import { login, LoginReqDto, useUserState } from "@/features";
 
 export default function IntroPage() {
   const navigate = useNavigate();
@@ -17,26 +22,47 @@ export default function IntroPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isSignupModalOpen, setSignupModalOpen] = useState(false);
+  const [isLoading, setLoading] = useState(false);
+  const [dialog, setDialog] = useState<SimpleDialogProps | null>(null);
 
   const isEmailValid = useMemo(() => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   }, [email]);
 
-  const handleClickLogin = useCallback(() => {
+  const handleClickLogin = useCallback(async () => {
     if (isLoginPhase) {
-      const newUser: User = {
-        userId: "1",
-        email: "a@a.com",
-        name: "Park",
-        profile: "abcd",
+      const loginReqDto: LoginReqDto = {
+        username: email,
+        password,
       };
-      setUser(newUser);
-      navigate("/tree/1");
+
+      setLoading(true);
+
+      try {
+        const user = await login(loginReqDto);
+        console.log(user);
+
+        setUser(user);
+
+        navigate(`/tree/${user.userId}`);
+      } catch (e) {
+        console.log(e);
+
+        setDialog({
+          message: "로그인에 실패했습니다. 이메일과 비밀번호를 확인해주세요.",
+          positiveLabel: "확인",
+          onClickPositive: () => {
+            setDialog(null);
+          },
+        });
+      } finally {
+        setLoading(false);
+      }
     } else {
       setLoginPhase(true);
     }
-  }, [isLoginPhase, setUser]);
+  }, [isLoginPhase, setUser, email, password]);
 
   const handleClickBackButton = useCallback(() => {
     setEmail("");
@@ -115,6 +141,14 @@ export default function IntroPage() {
       </div>
 
       {isSignupModalOpen && <SignupModal onClose={handleCloseSignupModal} />}
+      {isLoading && <Spinner />}
+      {dialog && (
+        <SimpleDialog
+          message={dialog.message}
+          positiveLabel={dialog.positiveLabel}
+          onClickPositive={dialog.onClickPositive}
+        />
+      )}
     </div>
   );
 }

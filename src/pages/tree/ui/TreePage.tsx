@@ -1,12 +1,26 @@
 import { useNavigate, useParams } from "react-router-dom";
 import styles from "./TreePage.module.css";
-import { Header, InfoModal } from "@/widgets";
+import {
+  Header,
+  InfoModal,
+  NewTreeModal,
+  SimpleDialog,
+  SimpleDialogProps,
+} from "@/widgets";
 import TreeImg from "@assets/tree.svg";
-import { MainButton, TextButton } from "@/shared";
+import { MainButton, Spinner, TextButton } from "@/shared";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { cardGrayImgs, cardImgs, Letter, useUserState } from "@/features";
+import {
+  cardGrayImgs,
+  cardImgs,
+  getTreeByUserId,
+  Letter,
+  Tree,
+  useUserState,
+} from "@/features";
 import CircleArrowLImg from "@assets/circle-arrow-l.svg";
 import CircleArrowRImg from "@assets/circle-arrow-r.svg";
+import { AxiosError } from "axios";
 
 export default function TreePage() {
   const { userId } = useParams();
@@ -14,7 +28,7 @@ export default function TreePage() {
   const { user } = useUserState();
 
   const isMyTree = useMemo(() => {
-    return userId === user?.userId;
+    return String(userId) === String(user?.userId);
   }, [userId, user]);
 
   const [timeLeft, setTimeLeft] = useState({
@@ -23,9 +37,13 @@ export default function TreePage() {
     minutes: 0,
     seconds: 0,
   });
+  const [tree, setTree] = useState<Tree | null>(null);
   const [letters, setLetters] = useState<Letter[]>([]);
   const [page, setPage] = useState(0);
   const [isMyInfoModalOpen, setMyInfoModalOpen] = useState(false);
+  const [isNewTreeModalOpen, setNewTreeModalOpen] = useState(false);
+  const [dialog, setDialog] = useState<SimpleDialogProps | null>(null);
+  const [isLoading, setLoading] = useState(false);
 
   const hasNextPage = useMemo(() => {
     const lettersCount = letters.length;
@@ -66,71 +84,56 @@ export default function TreePage() {
   };
 
   const getLetters = useCallback(async () => {
-    const foundLetters: Letter[] = [
-      {
-        letterId: "1",
-        treeId: "1",
-        title: "Letter 1",
-        content: "This is Letter 1",
-        createdAt: "2024-12-13",
-        nickname: "Writer 1",
-        sticker: 1,
-        private: false,
-      },
-      {
-        letterId: "2",
-        treeId: "1",
-        title: "Letter 1",
-        content: "This is Letter 1",
-        createdAt: "2024-12-13",
-        nickname: "Writer 1",
-        sticker: 2,
-        private: true,
-      },
-      {
-        letterId: "3",
-        treeId: "1",
-        title: "Letter 1",
-        content: "This is Letter 1",
-        createdAt: "2024-12-13",
-        nickname: "Writer 1",
-        sticker: 3,
-        private: false,
-      },
-      {
-        letterId: "4",
-        treeId: "1",
-        title: "Letter 1",
-        content: "This is Letter 1",
-        createdAt: "2024-12-13",
-        nickname: "Writer 1",
-        sticker: 4,
-        private: false,
-      },
-      {
-        letterId: "5",
-        treeId: "1",
-        title: "Letter 1",
-        content: "This is Letter 1",
-        createdAt: "2024-12-13",
-        nickname: "Writer 1",
-        sticker: 5,
-        private: true,
-      },
-      {
-        letterId: "6",
-        treeId: "1",
-        title: "Letter 1",
-        content: "This is Letter 1",
-        createdAt: "2024-12-13",
-        nickname: "Writer 1",
-        sticker: 6,
-        private: false,
-      },
-    ];
+    if (!user) {
+      setDialog({
+        message: "로그인이 필요한 서비스입니다.",
+        positiveLabel: "확인",
+        onClickPositive: () => {
+          navigate("/");
+        },
+      });
 
-    setLetters(foundLetters);
-  }, []);
+      return;
+    }
+
+    if (!userId) {
+      setDialog({
+        message: "잘못된 접근입니다.",
+        positiveLabel: "확인",
+        onClickPositive: () => {
+          navigate("/");
+        },
+      });
+
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const tree = await getTreeByUserId(userId);
+
+      setTree(tree);
+    } catch (e) {
+      const error = e as AxiosError;
+      console.log(error);
+
+      const hasNoTree = error.status === 400;
+      if (hasNoTree) {
+        setNewTreeModalOpen(true);
+      } else {
+        setDialog({
+          message: "트리 정보를 가져올 수 없습니다.",
+          positiveLabel: "확인",
+          onClickPositive: () => {
+            navigate("/");
+          },
+        });
+      }
+    } finally {
+      setLoading(false);
+    }
+  }, [user, userId]);
 
   useEffect(() => {
     const timer = setTimer();
@@ -176,9 +179,17 @@ export default function TreePage() {
       <div className={styles.ground} />
       <div className={styles.header}>
         <Header
-          title={`${isMyTree ? "나의 트리" : `의 트리`}`}
+          title={`${tree?.treeName || "이름 없는 트리"}`}
           onClickBackButton={isMyTree ? undefined : handleClickBackButton}
         />
+        {tree && (
+          <div className={styles["profile-wrapper"]}>
+            <div className={styles["profile-img-wrapper"]}>
+              <img src={tree.user?.profile} alt="ProfileImage" />
+            </div>
+            <div className={styles.nickname}>{tree.user?.nickname}</div>
+          </div>
+        )}
         <div className={styles["timer-wrapper"]}>
           <div className={`${styles.timer} text-sm`}>{timeLeftStr}</div>
         </div>
@@ -231,7 +242,16 @@ export default function TreePage() {
         </div>
       </div>
 
+      {dialog && (
+        <SimpleDialog
+          message={dialog.message}
+          positiveLabel={dialog.positiveLabel}
+          onClickPositive={dialog.onClickPositive}
+        />
+      )}
       {isMyInfoModalOpen && <InfoModal onClose={handleCloseMyInfoModal} />}
+      {isNewTreeModalOpen && <NewTreeModal />}
+      {isLoading && <Spinner />}
     </div>
   );
 }
