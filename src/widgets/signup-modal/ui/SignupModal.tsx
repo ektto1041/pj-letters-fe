@@ -154,7 +154,7 @@ export default function SignupModal({ onClose }: SingupModalProps) {
       const newUser: SignupReqDto = {
         username: email,
         password: password,
-        name: name,
+        nickname: name,
         profile: "",
       };
 

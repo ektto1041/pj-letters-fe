@@ -1,18 +1,15 @@
 import { authAxios, noAuthAxios } from "@/shared";
-import type { LoginReqDto, SignupReqDto } from "../model/types";
+import type { LoginReqDto, SignupReqDto, User } from "../model/types";
 
 export const login = async (loginReqDto: LoginReqDto) => {
-  const response = await noAuthAxios.post<unknown>(
-    `api/auth/login`,
-    loginReqDto
-  );
+  const response = await noAuthAxios.post<User>(`api/auth/login`, loginReqDto);
 
   return response.data;
 };
 
 export const signup = async (signupReqDto: SignupReqDto) => {
   const reponse = await noAuthAxios.post<unknown>(
-    `/api/user/join`,
+    `/api/auth/join`,
     signupReqDto
   );
 
@@ -21,7 +18,7 @@ export const signup = async (signupReqDto: SignupReqDto) => {
 
 export const sendAuthCode = async (sendTo: string) => {
   const reponse = await noAuthAxios.post<unknown>(
-    `/api/user/send-email-code?sendTo=${sendTo}`
+    `/api/auth/send-email-code?sendTo=${sendTo}`
   );
 
   return reponse.data;
@@ -29,7 +26,7 @@ export const sendAuthCode = async (sendTo: string) => {
 
 export const checkAuthCode = async (authCode: string) => {
   const reponse = await noAuthAxios.post<unknown>(
-    `/api/user/check-email-code?inputNum=${authCode}`
+    `/api/auth/check-email-code?inputNum=${authCode}`
   );
 
   return reponse.data;
