@@ -2,6 +2,7 @@ import { lazy, Suspense } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import App from "../App";
 import LoadingPage from "@/pages/loading";
+import { NotFoundPage } from "@/pages/not-found";
 
 const IntroPage = lazy(() => import("@pages/intro"));
 const TreePage = lazy(() => import("@pages/tree"));
@@ -13,6 +14,7 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
+    errorElement: <NotFoundPage />,
     children: [
       {
         path: "/",
