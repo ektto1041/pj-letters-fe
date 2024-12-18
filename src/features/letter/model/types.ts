@@ -8,3 +8,13 @@ export interface Letter {
   sticker: number;
   private: boolean;
 }
+
+export interface LetterInTree {
+  letterId: number;
+  nickname: string;
+  title: string;
+  sticker: number;
+  visible: boolean;
+  createdAt: string;
+  modifiedAt: string;
+}
