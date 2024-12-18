@@ -26,7 +26,13 @@ export default function CardPage() {
     } catch (e) {
       console.log(e);
 
-      // TODO 분기처리
+      setDialog({
+        message: "비정상적인 접근입니다.",
+        positiveLabel: "확인",
+        onClickPositive: () => {
+          navigate(-1);
+        },
+      });
     } finally {
       setLoading(false);
     }
