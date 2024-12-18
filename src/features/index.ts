@@ -15,5 +15,5 @@ export {
   logout,
   useUserState,
 } from "./user";
-export { getTreeByUserId, createTree } from "./tree";
+export { getTreeByUserId, createTree, updateTreeName } from "./tree";
 export type { Tree } from "./tree";

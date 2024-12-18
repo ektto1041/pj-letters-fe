@@ -27,3 +27,7 @@
   flex: 24px 0 0;
   height: 24px;
 }
+
+.pointer {
+  cursor: pointer;
+}

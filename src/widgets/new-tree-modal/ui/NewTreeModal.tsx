@@ -3,12 +3,18 @@ import styles from "./NewTreeModal.module.css";
 import { MainButton, MainInput, Spinner } from "@/shared";
 import { ChangeEventHandler, useCallback, useMemo, useState } from "react";
 import XmasTreeImg from "@assets/xmas-tree.png";
-import { createTree } from "@/features";
+import { createTree, updateTreeName } from "@/features";
 import { SimpleDialog, SimpleDialogProps } from "@/widgets/simple-dialog";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
-export default function NewTreeModal() {
+interface NewTreeModalProps {
+  isUpdate?: boolean;
+  onClose: () => void;
+}
+
+export default function NewTreeModal({ isUpdate, onClose }: NewTreeModalProps) {
   const navigate = useNavigate();
+  const { userId } = useParams();
 
   const [treeName, setTreeName] = useState("");
   const [isLoading, setLoading] = useState(false);
@@ -22,6 +28,30 @@ export default function NewTreeModal() {
     useCallback((e) => {
       setTreeName(e.target.value);
     }, []);
+
+  const handleClickUpdate = useCallback(async () => {
+    if (!userId) return;
+
+    setLoading(true);
+
+    try {
+      await updateTreeName(userId, treeName);
+
+      navigate(0);
+    } catch (e) {
+      console.log(e);
+
+      setDialog({
+        message: "트리 이름을 수정하는데 실패했습니다.",
+        positiveLabel: "확인",
+        onClickPositive: () => {
+          setDialog(null);
+        },
+      });
+    } finally {
+      setLoading(false);
+    }
+  }, [userId, treeName]);
 
   const handleClickSubmit = useCallback(async () => {
     setLoading(true);
@@ -46,7 +76,10 @@ export default function NewTreeModal() {
   }, [treeName]);
 
   return (
-    <FullModal title="나의 트리 생성">
+    <FullModal
+      title={isUpdate ? "트리 이름 수정" : "나의 트리 생성"}
+      onClose={isUpdate ? onClose : undefined}
+    >
       <div className={styles.container}>
         <div className={styles.content}>
           <div className={`${styles.description} text-sm`}>
@@ -71,7 +104,7 @@ export default function NewTreeModal() {
         <div className={styles["nav-bar"]}>
           <MainButton
             color="primary"
-            onClick={handleClickSubmit}
+            onClick={isUpdate ? handleClickUpdate : handleClickSubmit}
             disabled={!isTreeNameValid}
           >
             확인

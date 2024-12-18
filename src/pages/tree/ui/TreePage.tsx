@@ -43,6 +43,7 @@ export default function TreePage() {
   const [page, setPage] = useState(0);
   const [isMyInfoModalOpen, setMyInfoModalOpen] = useState(false);
   const [isNewTreeModalOpen, setNewTreeModalOpen] = useState(false);
+  const [isUpdateTreeModalOpen, setUpdateTreeModalOpen] = useState(false);
   const [dialog, setDialog] = useState<SimpleDialogProps | null>(null);
   const [isLoading, setLoading] = useState(false);
 
@@ -177,6 +178,18 @@ export default function TreePage() {
     setMyInfoModalOpen(false);
   }, []);
 
+  const handleCloseNewTreeModal = useCallback(() => {
+    setNewTreeModalOpen(false);
+  }, []);
+
+  const handleCloseUpdateTreeModal = useCallback(() => {
+    setUpdateTreeModalOpen(false);
+  }, []);
+
+  const handleClickHeader = useCallback(() => {
+    setUpdateTreeModalOpen(true);
+  }, []);
+
   return (
     <div className={styles.container}>
       <div className={styles.ground} />
@@ -184,6 +197,7 @@ export default function TreePage() {
         <Header
           title={`${tree?.treeName || "이름 없는 트리"}`}
           onClickBackButton={isMyTree ? undefined : handleClickBackButton}
+          onClickHeader={isMyTree ? handleClickHeader : undefined}
         />
         {tree && (
           <div className={styles["profile-wrapper"]}>
@@ -253,7 +267,10 @@ export default function TreePage() {
         />
       )}
       {isMyInfoModalOpen && <InfoModal onClose={handleCloseMyInfoModal} />}
-      {isNewTreeModalOpen && <NewTreeModal />}
+      {isNewTreeModalOpen && <NewTreeModal onClose={handleCloseNewTreeModal} />}
+      {isUpdateTreeModalOpen && (
+        <NewTreeModal isUpdate onClose={handleCloseUpdateTreeModal} />
+      )}
       {isLoading && <Spinner />}
     </div>
   );
