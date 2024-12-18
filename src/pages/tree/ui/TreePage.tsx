@@ -235,8 +235,8 @@ export default function TreePage() {
               <img
                 src={
                   !letter.visible
-                    ? cardGrayImgs[letter.sticker - 1]
-                    : cardImgs[letter.sticker - 1]
+                    ? cardGrayImgs[letter.sticker]
+                    : cardImgs[letter.sticker]
                 }
                 alt="CardImg"
               />
