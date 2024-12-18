@@ -8,3 +8,12 @@ export interface Letter {
   sticker: number;
   private: boolean;
 }
+
+export interface NewLetter {
+  title: string;
+  content: string;
+  sticker: number;
+  name: string;
+  treeId: number;
+  visible: boolean;
+}
