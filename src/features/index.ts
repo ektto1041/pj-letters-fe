@@ -11,3 +11,4 @@ export {
   useUserState,
 } from "./user";
 export { getTreeByUserId, createTree } from "./tree";
+export type { Tree } from "./tree";
