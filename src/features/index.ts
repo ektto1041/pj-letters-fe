@@ -10,3 +10,4 @@ export {
   logout,
   useUserState,
 } from "./user";
+export { getTreeByUserId, createTree } from "./tree";
