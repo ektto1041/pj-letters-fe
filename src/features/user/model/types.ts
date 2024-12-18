@@ -11,7 +11,7 @@ export interface LoginReqDto {
 }
 
 export interface SignupReqDto {
-  email: string;
+  username: string;
   password: string;
   name: string;
   profile: string;

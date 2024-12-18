@@ -1,4 +1,4 @@
-import { MainButton, MainInput } from "@/shared";
+import { MainButton, MainInput, Spinner } from "@/shared";
 import styles from "./SignupModal.module.css";
 import { ChangeEventHandler, useCallback, useMemo, useState } from "react";
 import { FullModal } from "@/widgets/full-modal";
@@ -7,6 +7,8 @@ import KeyImg from "@assets/key.svg";
 import LockImg from "@assets/lock.svg";
 import AccountImg from "@assets/account.svg";
 import { useNavigate } from "react-router-dom";
+import { checkAuthCode, sendAuthCode, signup, SignupReqDto } from "@/features";
+import { SimpleDialog, SimpleDialogProps } from "@/widgets/simple-dialog";
 
 interface SingupModalProps {
   onClose: () => void;
@@ -25,6 +27,8 @@ export default function SignupModal({ onClose }: SingupModalProps) {
 
   const [page, setPage] = useState(0);
   const [phase, setPhase] = useState<SignupPhase>("email");
+  const [isLoading, setLoading] = useState(false);
+  const [dialog, setDialog] = useState<SimpleDialogProps | null>(null);
 
   const [email, setEmail] = useState("");
   const [authKey, setAuthKey] = useState("");
@@ -94,38 +98,93 @@ export default function SignupModal({ onClose }: SingupModalProps) {
       setConfirmPassword(e.target.value);
     }, []);
 
-  const handleClickNext = useCallback(() => {
+  const handleClickNext = useCallback(async () => {
     if (phase === "email") {
       setPhase("checkingEmail");
-      // Send Code
-      if (true) {
+      setLoading(true);
+
+      try {
+        const response = await sendAuthCode(email);
+        console.log(response);
+
         setPhase("authCode");
         setPage(1);
-      } else {
-        alert("메일 전송에 실패했습니다. 이메일을 확인해주세요.");
-        setPhase("email");
+      } catch (e) {
+        console.log(e);
+
+        setDialog({
+          message: "메일 전송에 실패했습니다. 이메일을 확인해주세요.",
+          positiveLabel: "확인",
+          onClickPositive: () => {
+            setPhase("email");
+            setDialog(null);
+          },
+        });
+      } finally {
+        setLoading(false);
       }
     } else if (phase === "authCode") {
       setPhase("checkingAuthCode");
-      // Send Code
-      if (true) {
+      setLoading(true);
+
+      try {
+        const response = await checkAuthCode(authKey);
+        console.log(response);
+
         setPhase("extra");
         setPage(2);
-      } else {
-        alert("인증 코드가 틀립니다. 다시 시도해주세요.");
-        setPhase("authCode");
+      } catch (e) {
+        console.log(e);
+
+        setDialog({
+          message: "인증 코드가 틀립니다. 다시 시도해주세요.",
+          positiveLabel: "확인",
+          onClickPositive: () => {
+            setPhase("authCode");
+            setDialog(null);
+          },
+        });
+      } finally {
+        setLoading(false);
       }
     } else if (phase === "extra") {
       setPhase("signup");
-      // send API
-      if (true) {
-        alert("회원가입에 성공했습니다.");
-        navigate(0);
-      } else {
-        alert("회원가입에 실패했습니다.");
+      setLoading(true);
+
+      const newUser: SignupReqDto = {
+        username: email,
+        password: password,
+        name: name,
+        profile: "",
+      };
+
+      try {
+        const response = await signup(newUser);
+        console.log(response);
+
+        setDialog({
+          message: "회원가입에 성공했습니다.",
+          positiveLabel: "확인",
+          onClickPositive: () => {
+            navigate(0);
+          },
+        });
+      } catch (e) {
+        console.log(e);
+
+        setDialog({
+          message: "회원가입에 실패했습니다.",
+          positiveLabel: "확인",
+          onClickPositive: () => {
+            setPhase("extra");
+            setDialog(null);
+          },
+        });
+      } finally {
+        setLoading(false);
       }
     }
-  }, [phase]);
+  }, [email, authKey, name, password, phase]);
 
   return (
     <FullModal title="회원가입" onClose={onClose}>
@@ -233,6 +292,15 @@ export default function SignupModal({ onClose }: SingupModalProps) {
           </MainButton>
         </div>
       </div>
+
+      {isLoading && <Spinner />}
+      {dialog && (
+        <SimpleDialog
+          message={dialog.message}
+          positiveLabel={dialog.positiveLabel}
+          onClickPositive={dialog.onClickPositive}
+        />
+      )}
     </FullModal>
   );
 }

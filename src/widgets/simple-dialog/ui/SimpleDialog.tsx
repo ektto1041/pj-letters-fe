@@ -1,7 +1,7 @@
 import { BaseDialog } from "@/widgets/base-dialog";
 import styles from "./SimpleDialog.module.css";
 
-interface SimpleDialogProps {
+export interface SimpleDialogProps {
   message: string;
   positiveLabel: string;
   negativeLabel?: string;
