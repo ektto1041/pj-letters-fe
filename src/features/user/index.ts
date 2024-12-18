@@ -7,3 +7,4 @@ export {
   checkAuthCode,
   logout,
 } from "./api/AuthApi";
+export { uploadImage } from "./api/UserApi";

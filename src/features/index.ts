@@ -15,6 +15,7 @@ export {
   sendAuthCode,
   checkAuthCode,
   logout,
+  uploadImage,
   useUserState,
 } from "./user";
 export { getTreeByUserId, createTree, updateTreeName } from "./tree";
