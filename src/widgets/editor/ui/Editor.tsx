@@ -22,7 +22,7 @@ export default function Editor({
     editable,
     editorProps: {
       attributes: {
-        class: "text-sm",
+        class: "text-md",
       },
     },
   });
