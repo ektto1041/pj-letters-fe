@@ -23,6 +23,7 @@ import {
 import CircleArrowLImg from "@assets/circle-arrow-l.svg";
 import CircleArrowRImg from "@assets/circle-arrow-r.svg";
 import { AxiosError } from "axios";
+import SnowmanImg from "@assets/snowman.svg";
 
 type Time = {
   days: number;
@@ -264,9 +265,25 @@ export default function TreePage() {
           const formData = new FormData();
           formData.append("images", file);
 
-          const url = await uploadImage(formData);
+          setLoading(true);
 
-          console.log(url);
+          try {
+            await uploadImage(formData);
+
+            navigate(0);
+          } catch (e) {
+            console.log(e);
+
+            setDialog({
+              message: "프로필 이미지 변경에 실패했습니다.",
+              positiveLabel: "확인",
+              onClickPositive: () => {
+                setDialog(null);
+              },
+            });
+          } finally {
+            setLoading(false);
+          }
         }
       }
     };
@@ -289,7 +306,16 @@ export default function TreePage() {
 
   return (
     <div className={styles.container}>
-      <div className={styles.ground} />
+      <div className={styles.ground}>
+        <div className={styles.snowman}>
+          <div>
+            <img src={SnowmanImg} alt="Snowman" />
+            <div className={`${styles.bubble} text-sm`}>
+              만든이: glow_ju_013
+            </div>
+          </div>
+        </div>
+      </div>
       <div className={styles.header}>
         <Header
           title={`${tree?.treeName || "이름 없는 트리"}`}

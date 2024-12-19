@@ -32,7 +32,9 @@ export default function FriendList() {
       const friends = await getFriends();
 
       setFriends(
-        friends.filter((friend) => String(friend.userId) !== user!.userId)
+        friends.filter(
+          (friend) => String(friend.userId) !== String(user!.userId)
+        )
       );
     } catch (e) {
       console.log(e);

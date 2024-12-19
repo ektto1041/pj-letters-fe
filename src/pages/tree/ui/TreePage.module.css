@@ -16,6 +16,34 @@
   background-color: var(--color-gray-50);
   border-radius: 150vw;
   transform: translateY(-20dvh);
+
+  .snowman {
+    position: absolute;
+    top: -48px;
+    left: -48px;
+    width: calc(300vw + 96px);
+    height: calc(300vw + 96px);
+    transform-origin: center;
+    transform: rotate(9deg);
+
+    & > div {
+      position: relative;
+      display: block;
+      width: 48px;
+      height: 48px;
+      margin: 0 auto;
+
+      img {
+        width: 100%;
+        height: 100%;
+      }
+
+      .bubble {
+        color: var(--color-gray-500);
+        width: 300%;
+      }
+    }
+  }
 }
 
 .header {
