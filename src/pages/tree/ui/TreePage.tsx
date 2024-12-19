@@ -208,9 +208,10 @@ export default function TreePage() {
             setDialog(null);
           },
         });
-      } else if (isXmas) {
+      } else {
         navigate(`/card/${letterId}`);
       }
+      // } else if(isXmas) {
       // } else {
       //   setDialog({
       //     message: "메시지는 크리스마스부터 열어볼 수 있습니다.",
