@@ -200,25 +200,26 @@ export default function TreePage() {
 
   const handleClickLetter = useCallback(
     (letterId: number, visible: boolean) => {
-      if (!isMyTree && !visible) {
-        setDialog({
-          message: "비밀 메시지는 트리의 주인만 확인할 수 있습니다.",
-          positiveLabel: "확인",
-          onClickPositive: () => {
-            setDialog(null);
-          },
-        });
-      } else if (isXmas) {
-        navigate(`/card/${letterId}`);
-      } else {
-        setDialog({
-          message: "메시지는 크리스마스부터 열어볼 수 있습니다.",
-          positiveLabel: "확인",
-          onClickPositive: () => {
-            setDialog(null);
-          },
-        });
-      }
+      navigate(`/card/${letterId}`);
+      // if (!isMyTree && !visible) {
+      //   setDialog({
+      //     message: "비밀 메시지는 트리의 주인만 확인할 수 있습니다.",
+      //     positiveLabel: "확인",
+      //     onClickPositive: () => {
+      //       setDialog(null);
+      //     },
+      //   });
+      // } else if (isXmas) {
+
+      // } else {
+      //   setDialog({
+      //     message: "메시지는 크리스마스부터 열어볼 수 있습니다.",
+      //     positiveLabel: "확인",
+      //     onClickPositive: () => {
+      //       setDialog(null);
+      //     },
+      //   });
+      // }
     },
     [isXmas, isMyTree]
   );
