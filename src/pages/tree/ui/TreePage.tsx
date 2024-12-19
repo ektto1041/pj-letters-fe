@@ -255,7 +255,13 @@ export default function TreePage() {
 
         if (file.size > 2 * 1000 * 1000) {
           setDialog({
-            message: "2MB 이하의 이미지 파일만 등록할 수 있습니다.",
+            message: (
+              <>
+                2MB 이하의 이미지 파일만
+                <br />
+                등록할 수 있습니다.
+              </>
+            ),
             positiveLabel: "확인",
             onClickPositive: () => {
               setDialog(null);

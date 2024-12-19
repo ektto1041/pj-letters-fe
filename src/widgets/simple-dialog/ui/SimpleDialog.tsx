@@ -1,8 +1,9 @@
 import { BaseDialog } from "@/widgets/base-dialog";
 import styles from "./SimpleDialog.module.css";
+import { ReactNode } from "react";
 
 export interface SimpleDialogProps {
-  message: string;
+  message: ReactNode;
   positiveLabel: string;
   negativeLabel?: string;
   onClickPositive: () => void;
