@@ -152,6 +152,12 @@
   }
 }
 
+.auth-button-box {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+}
+
 .card1 {
   top: 150px;
   left: 30px;

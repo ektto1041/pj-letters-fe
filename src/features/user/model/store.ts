@@ -5,6 +5,7 @@ import { createJSONStorage, persist } from "zustand/middleware";
 interface UserState {
   user: User | null;
   setUser: (newUser: User) => void;
+  setUserNull: () => void;
 }
 
 export const useUserState = create(
@@ -12,6 +13,7 @@ export const useUserState = create(
     (set) => ({
       user: null,
       setUser: (newUser: User) => set({ user: newUser }),
+      setUserNull: () => set({ user: null }),
     }),
     {
       name: "user-storage",

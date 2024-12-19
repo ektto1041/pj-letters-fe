@@ -54,7 +54,7 @@ const calcTime: () => Time = () => {
 export default function TreePage() {
   const { userId } = useParams();
   const navigate = useNavigate();
-  const { user } = useUserState();
+  const { user, setUserNull } = useUserState();
 
   const isMyTree = useMemo(() => {
     return String(userId) === String(user?.userId);
@@ -272,6 +272,21 @@ export default function TreePage() {
     };
   }, []);
 
+  const handleClickLogout = useCallback(() => {
+    setDialog({
+      message: "정말 로그아웃하시겠습니까?",
+      positiveLabel: "확인",
+      negativeLabel: "취소",
+      onClickPositive: () => {
+        navigate("/");
+        setUserNull();
+      },
+      onClickNegative: () => {
+        setDialog(null);
+      },
+    });
+  }, [setUserNull]);
+
   return (
     <div className={styles.container}>
       <div className={styles.ground} />
@@ -333,7 +348,13 @@ export default function TreePage() {
         <div className={styles["button-box"]}>
           {isMyTree ? (
             <>
-              <TextButton onClick={handleClickMyInfo}>비밀번호 변경</TextButton>
+              <div className={styles["auth-button-box"]}>
+                <TextButton onClick={handleClickMyInfo}>
+                  비밀번호 변경
+                </TextButton>
+                <TextButton onClick={handleClickLogout}>로그아웃</TextButton>
+              </div>
+
               <MainButton color="primary" onClick={handleClickFriendList}>
                 친구 목록
               </MainButton>
@@ -350,7 +371,9 @@ export default function TreePage() {
         <SimpleDialog
           message={dialog.message}
           positiveLabel={dialog.positiveLabel}
+          negativeLabel={dialog.negativeLabel}
           onClickPositive={dialog.onClickPositive}
+          onClickNegative={dialog.onClickNegative}
         />
       )}
       {isMyInfoModalOpen && <InfoModal onClose={handleCloseMyInfoModal} />}
