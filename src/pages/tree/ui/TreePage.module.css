@@ -33,6 +33,8 @@
   display: flex;
   align-items: center;
   gap: 8px;
+  width: 50%; /* Safari 전용 스타일 */
+  justify-content: flex-end;
 }
 
 .profile-img-wrapper {
