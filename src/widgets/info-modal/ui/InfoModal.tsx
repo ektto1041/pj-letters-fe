@@ -80,7 +80,7 @@ export default function InfoModal({ onClose }: InfoModalProps) {
             placeholder="비밀번호"
             type="password"
             value={password}
-            maxLength={12}
+            maxLength={20}
             disabled={isLoading}
             onChange={handleChangePassword}
           />
@@ -96,7 +96,7 @@ export default function InfoModal({ onClose }: InfoModalProps) {
             placeholder="비밀번호 확인"
             type="password"
             value={confirmPassword}
-            maxLength={12}
+            maxLength={20}
             disabled={isLoading}
             onChange={handleChangeConfirmPassword}
           />

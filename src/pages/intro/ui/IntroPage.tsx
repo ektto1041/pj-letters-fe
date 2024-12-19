@@ -117,6 +117,7 @@ export default function IntroPage() {
               value={email}
               type="email"
               onChange={handleChangeEmail}
+              maxLength={30}
             />
             <MainInput
               icon={LockImg}
@@ -124,6 +125,7 @@ export default function IntroPage() {
               type="password"
               value={password}
               onChange={handleChangePassword}
+              maxLength={20}
             />
             <TextButton onClick={handleOpenSignupModal}>
               회원가입하기

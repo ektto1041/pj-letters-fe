@@ -249,7 +249,7 @@ export default function SignupModal({ onClose }: SingupModalProps) {
                   placeholder="비밀번호"
                   type="password"
                   value={password}
-                  maxLength={12}
+                  maxLength={20}
                   disabled={phase !== "extra"}
                   onChange={handleChangePassword}
                 />
@@ -265,7 +265,7 @@ export default function SignupModal({ onClose }: SingupModalProps) {
                   placeholder="비밀번호 확인"
                   type="password"
                   value={confirmPassword}
-                  maxLength={12}
+                  maxLength={20}
                   disabled={phase !== "extra"}
                   onChange={handleChangeConfirmPassword}
                 />
