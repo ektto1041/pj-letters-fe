@@ -124,7 +124,6 @@ export default function IntroPage() {
               type="password"
               value={password}
               onChange={handleChangePassword}
-              maxLength={8}
             />
             <TextButton onClick={handleOpenSignupModal}>
               회원가입하기
