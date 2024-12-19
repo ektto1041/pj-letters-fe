@@ -17,24 +17,38 @@ export default function CardPage() {
   const letterRef = useRef<HTMLDivElement>(null);
 
   const getLetter = useCallback(async (letterId: string) => {
-    setLoading(true);
+    const christmasDay = new Date("2024-12-25T00:00:00");
 
-    try {
-      const letter = await getLetterById(parseInt(letterId));
-
-      setLetter(letter);
-    } catch (e) {
-      console.log(e);
-
+    const now = new Date();
+    const difference = christmasDay.getTime() - now.getTime();
+    if (difference > 0) {
       setDialog({
-        message: "비정상적인 접근입니다.",
+        message: "열람할 수 없습니다.",
         positiveLabel: "확인",
         onClickPositive: () => {
           navigate(-1);
         },
       });
-    } finally {
-      setLoading(false);
+    } else {
+      setLoading(true);
+
+      try {
+        const letter = await getLetterById(parseInt(letterId));
+
+        setLetter(letter);
+      } catch (e) {
+        console.log(e);
+
+        setDialog({
+          message: "열람할 수 없습니다.",
+          positiveLabel: "확인",
+          onClickPositive: () => {
+            navigate(-1);
+          },
+        });
+      } finally {
+        setLoading(false);
+      }
     }
   }, []);
 
