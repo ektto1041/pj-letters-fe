@@ -6,4 +6,6 @@ export {
   sendAuthCode,
   checkAuthCode,
   logout,
+  updatePassword,
 } from "./api/AuthApi";
+export { uploadImage } from "./api/UserApi";

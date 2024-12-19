@@ -16,6 +16,8 @@
 .profile-img-wrapper {
   flex: 32px 0 0;
   height: 32px;
+  border-radius: 16px;
+  overflow: hidden;
 
   img {
     width: 100%;

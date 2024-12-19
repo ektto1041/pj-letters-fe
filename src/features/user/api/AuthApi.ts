@@ -37,3 +37,11 @@ export const logout = async () => {
 
   return response.data;
 };
+
+export const updatePassword = async (password: string) => {
+  const response = await authAxios.put<unknown>(`/api/user/updatePassword`, {
+    password,
+  });
+
+  return response.data;
+};

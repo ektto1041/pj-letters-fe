@@ -17,27 +17,59 @@ import {
   getTreeByUserId,
   LetterInTree,
   Tree,
+  uploadImage,
   useUserState,
 } from "@/features";
 import CircleArrowLImg from "@assets/circle-arrow-l.svg";
 import CircleArrowRImg from "@assets/circle-arrow-r.svg";
 import { AxiosError } from "axios";
 
+type Time = {
+  days: number;
+  hours: number;
+  minutes: number;
+  seconds: number;
+};
+
+const calcTime: () => Time = () => {
+  const christmasDay = new Date("2024-12-25T00:00:00");
+
+  const now = new Date();
+  const difference = christmasDay.getTime() - now.getTime();
+
+  if (difference > 0) {
+    const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+    const hours = Math.floor(
+      (difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+    );
+    const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+    return { days, hours, minutes, seconds };
+  } else {
+    return { days: 0, hours: 0, minutes: 0, seconds: 0 };
+  }
+};
+
 export default function TreePage() {
   const { userId } = useParams();
   const navigate = useNavigate();
-  const { user } = useUserState();
+  const { user, setUserNull } = useUserState();
 
   const isMyTree = useMemo(() => {
     return String(userId) === String(user?.userId);
   }, [userId, user]);
 
-  const [timeLeft, setTimeLeft] = useState({
-    days: 0,
-    hours: 0,
-    minutes: 0,
-    seconds: 0,
-  });
+  const [timeLeft, setTimeLeft] = useState<Time>(calcTime());
+  const isXmas = useMemo(() => {
+    return (
+      timeLeft.days === 0 &&
+      timeLeft.hours === 0 &&
+      timeLeft.minutes === 0 &&
+      timeLeft.seconds === 0
+    );
+  }, [timeLeft]);
+
   const [tree, setTree] = useState<Tree | null>(null);
   const [letters, setLetters] = useState<LetterInTree[]>([]);
   const [page, setPage] = useState(0);
@@ -166,9 +198,30 @@ export default function TreePage() {
     navigate(`/new-card/${userId}/${tree?.treeId}`);
   }, [userId, tree]);
 
-  const handleClickLetter = useCallback((letterId: number) => {
-    navigate(`/card/${letterId}`);
-  }, []);
+  const handleClickLetter = useCallback(
+    (letterId: number, visible: boolean) => {
+      if (!isMyTree && !visible) {
+        setDialog({
+          message: "비밀 메시지는 트리의 주인만 확인할 수 있습니다.",
+          positiveLabel: "확인",
+          onClickPositive: () => {
+            setDialog(null);
+          },
+        });
+      } else if (isXmas) {
+        navigate(`/card/${letterId}`);
+      } else {
+        setDialog({
+          message: "메시지는 크리스마스부터 열어볼 수 있습니다.",
+          positiveLabel: "확인",
+          onClickPositive: () => {
+            setDialog(null);
+          },
+        });
+      }
+    },
+    [isXmas, isMyTree]
+  );
 
   const handleClickMyInfo = useCallback(() => {
     setMyInfoModalOpen(true);
@@ -190,6 +243,50 @@ export default function TreePage() {
     setUpdateTreeModalOpen(true);
   }, []);
 
+  const handleClickProfileImg = useCallback(() => {
+    const input = document.createElement("input");
+    input.setAttribute("type", "file");
+    input.setAttribute("accept", "image/*");
+    input.click();
+    input.onchange = async () => {
+      if (input.files) {
+        const file = input.files[0];
+
+        if (file.size > 2 * 1000 * 1000) {
+          setDialog({
+            message: "2MB 이하의 이미지 파일만 등록할 수 있습니다.",
+            positiveLabel: "확인",
+            onClickPositive: () => {
+              setDialog(null);
+            },
+          });
+        } else {
+          const formData = new FormData();
+          formData.append("images", file);
+
+          const url = await uploadImage(formData);
+
+          console.log(url);
+        }
+      }
+    };
+  }, []);
+
+  const handleClickLogout = useCallback(() => {
+    setDialog({
+      message: "정말 로그아웃하시겠습니까?",
+      positiveLabel: "확인",
+      negativeLabel: "취소",
+      onClickPositive: () => {
+        navigate("/");
+        setUserNull();
+      },
+      onClickNegative: () => {
+        setDialog(null);
+      },
+    });
+  }, [setUserNull]);
+
   return (
     <div className={styles.container}>
       <div className={styles.ground} />
@@ -201,15 +298,20 @@ export default function TreePage() {
         />
         {tree && (
           <div className={styles["profile-wrapper"]}>
-            <div className={styles["profile-img-wrapper"]}>
+            <div
+              className={styles["profile-img-wrapper"]}
+              onClick={isMyTree ? handleClickProfileImg : undefined}
+            >
               <img src={tree.profile} alt="ProfileImage" />
             </div>
             <div className={`${styles.nickname} text-md`}>{tree.nickname}</div>
           </div>
         )}
-        <div className={styles["timer-wrapper"]}>
-          <div className={`${styles.timer} text-sm`}>{timeLeftStr}</div>
-        </div>
+        {!isXmas && (
+          <div className={styles["timer-wrapper"]}>
+            <div className={`${styles.timer} text-sm`}>{timeLeftStr}</div>
+          </div>
+        )}
       </div>
       <div className={styles.content}>
         <div className={styles["arrow-button-box"]}>
@@ -230,7 +332,7 @@ export default function TreePage() {
             <div
               className={`${styles["card-wrapper"]} ${styles[`card${i + 1}`]}`}
               key={letter.letterId}
-              onClick={() => handleClickLetter(letter.letterId)}
+              onClick={() => handleClickLetter(letter.letterId, letter.visible)}
             >
               <img
                 src={
@@ -246,7 +348,13 @@ export default function TreePage() {
         <div className={styles["button-box"]}>
           {isMyTree ? (
             <>
-              <TextButton onClick={handleClickMyInfo}>비밀번호 변경</TextButton>
+              <div className={styles["auth-button-box"]}>
+                <TextButton onClick={handleClickMyInfo}>
+                  비밀번호 변경
+                </TextButton>
+                <TextButton onClick={handleClickLogout}>로그아웃</TextButton>
+              </div>
+
               <MainButton color="primary" onClick={handleClickFriendList}>
                 친구 목록
               </MainButton>
@@ -263,7 +371,9 @@ export default function TreePage() {
         <SimpleDialog
           message={dialog.message}
           positiveLabel={dialog.positiveLabel}
+          negativeLabel={dialog.negativeLabel}
           onClickPositive={dialog.onClickPositive}
+          onClickNegative={dialog.onClickNegative}
         />
       )}
       {isMyInfoModalOpen && <InfoModal onClose={handleCloseMyInfoModal} />}
