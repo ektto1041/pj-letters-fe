@@ -158,6 +158,7 @@ export default function NewCardPage() {
         disabled={phase === "img"}
         value={title}
         onChange={handleChangeTitle}
+        maxLength={50}
       />
       <div className={styles["editor-wrapper"]}>
         <Editor onChange={handleChangeContent} defaultContent="<p></p>" />
@@ -177,6 +178,7 @@ export default function NewCardPage() {
           disabled={phase === "img"}
           value={nickname}
           onChange={handleChangeNickname}
+          maxLength={20}
         />
       </div>
       <div className={styles["submit-wrapper"]}>

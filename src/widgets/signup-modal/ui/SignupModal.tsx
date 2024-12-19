@@ -205,6 +205,7 @@ export default function SignupModal({ onClose }: SingupModalProps) {
                   value={email}
                   disabled={phase !== "email"}
                   onChange={handleChangeEmail}
+                  maxLength={30}
                 />
               </div>
             </div>
@@ -239,7 +240,7 @@ export default function SignupModal({ onClose }: SingupModalProps) {
                   placeholder="이름 (본명)"
                   type="text"
                   value={name}
-                  maxLength={3}
+                  maxLength={6}
                   disabled={phase !== "extra"}
                   onChange={handleChangeName}
                 />
