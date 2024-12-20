@@ -66,7 +66,7 @@ export default function SignupModal({ onClose }: SingupModalProps) {
       (phase === "email" && isEmailValid) ||
       (phase === "authCode" && authKey.length === 6) ||
       (phase === "extra" &&
-        name.length >= 3 &&
+        name.length >= 2 &&
         isPasswordValid &&
         isConfirmPasswordValid)
     );
@@ -208,7 +208,7 @@ export default function SignupModal({ onClose }: SingupModalProps) {
         setLoading(false);
       }
     }
-  }, [email, authKey, name, password, phase]);
+  }, [email, authKey, name, password, phase, canNext]);
 
   const handleKeyDown: KeyboardEventHandler<HTMLInputElement> = useCallback(
     (e) => {
