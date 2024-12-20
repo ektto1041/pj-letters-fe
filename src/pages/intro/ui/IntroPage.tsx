@@ -12,6 +12,7 @@ import {
   KeyboardEventHandler,
   useCallback,
   useMemo,
+  useRef,
   useState,
 } from "react";
 import EmailImg from "@assets/email.svg";
@@ -30,6 +31,8 @@ export default function IntroPage() {
   const [isSignupModalOpen, setSignupModalOpen] = useState(false);
   const [isLoading, setLoading] = useState(false);
   const [dialog, setDialog] = useState<SimpleDialogProps | null>(null);
+
+  const emailInputRef = useRef<HTMLInputElement>(null);
 
   const isEmailValid = useMemo(() => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -65,6 +68,7 @@ export default function IntroPage() {
           positiveLabel: "확인",
           onClickPositive: () => {
             setDialog(null);
+            emailInputRef.current?.focus();
           },
         });
       } finally {
@@ -72,6 +76,7 @@ export default function IntroPage() {
       }
     } else {
       setLoginPhase(true);
+      emailInputRef.current?.focus();
     }
   }, [isLoginPhase, setUser, email, password, cantLogin]);
 
@@ -101,7 +106,7 @@ export default function IntroPage() {
     setSignupModalOpen(false);
   }, []);
 
-  const handleKeyDownPassword: KeyboardEventHandler<HTMLInputElement> =
+  const handleKeyDownLogin: KeyboardEventHandler<HTMLInputElement> =
     useCallback(
       (e) => {
         if (e.key === "Enter") {
@@ -139,6 +144,8 @@ export default function IntroPage() {
               type="email"
               onChange={handleChangeEmail}
               maxLength={30}
+              onKeyDown={handleKeyDownLogin}
+              ref={emailInputRef}
             />
             <MainInput
               icon={LockImg}
@@ -147,7 +154,7 @@ export default function IntroPage() {
               value={password}
               onChange={handleChangePassword}
               maxLength={20}
-              onKeyDown={handleKeyDownPassword}
+              onKeyDown={handleKeyDownLogin}
             />
             <TextButton onClick={handleOpenSignupModal}>
               회원가입하기
