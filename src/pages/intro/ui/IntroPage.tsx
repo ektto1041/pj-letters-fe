@@ -7,7 +7,13 @@ import {
   SimpleDialog,
   SimpleDialogProps,
 } from "@/widgets";
-import { ChangeEventHandler, useCallback, useMemo, useState } from "react";
+import {
+  ChangeEventHandler,
+  KeyboardEventHandler,
+  useCallback,
+  useMemo,
+  useState,
+} from "react";
 import EmailImg from "@assets/email.svg";
 import LockImg from "@assets/lock.svg";
 import { useNavigate } from "react-router-dom";
@@ -30,7 +36,12 @@ export default function IntroPage() {
     return emailRegex.test(email);
   }, [email]);
 
+  const cantLogin = useMemo(() => {
+    return isLoginPhase && (!isEmailValid || password.length === 0);
+  }, [isLoginPhase, isEmailValid, password]);
+
   const handleClickLogin = useCallback(async () => {
+    if (cantLogin) return;
     if (isLoginPhase) {
       const loginReqDto: LoginReqDto = {
         username: email,
@@ -62,7 +73,7 @@ export default function IntroPage() {
     } else {
       setLoginPhase(true);
     }
-  }, [isLoginPhase, setUser, email, password]);
+  }, [isLoginPhase, setUser, email, password, cantLogin]);
 
   const handleClickBackButton = useCallback(() => {
     setEmail("");
@@ -89,6 +100,16 @@ export default function IntroPage() {
   const handleCloseSignupModal = useCallback(() => {
     setSignupModalOpen(false);
   }, []);
+
+  const handleKeyDownPassword: KeyboardEventHandler<HTMLInputElement> =
+    useCallback(
+      (e) => {
+        if (e.key === "Enter") {
+          handleClickLogin();
+        }
+      },
+      [handleClickLogin]
+    );
 
   return (
     <div className={styles.container}>
@@ -126,6 +147,7 @@ export default function IntroPage() {
               value={password}
               onChange={handleChangePassword}
               maxLength={20}
+              onKeyDown={handleKeyDownPassword}
             />
             <TextButton onClick={handleOpenSignupModal}>
               회원가입하기
@@ -134,7 +156,7 @@ export default function IntroPage() {
           <MainButton
             color="primary"
             onClick={handleClickLogin}
-            disabled={isLoginPhase && (!isEmailValid || password.length === 0)}
+            disabled={cantLogin}
           >
             로그인하기
           </MainButton>

@@ -1,4 +1,8 @@
-import type { ChangeEventHandler, HTMLInputTypeAttribute } from "react";
+import type {
+  ChangeEventHandler,
+  HTMLInputTypeAttribute,
+  KeyboardEventHandler,
+} from "react";
 import styles from "./MainInput.module.css";
 
 interface MainInputProps {
@@ -9,6 +13,7 @@ interface MainInputProps {
   value: string;
   disabled?: boolean;
   onChange: ChangeEventHandler<HTMLInputElement>;
+  onKeyDown?: KeyboardEventHandler<HTMLInputElement>;
 }
 
 export default function MainInput({
@@ -19,6 +24,7 @@ export default function MainInput({
   value,
   disabled,
   onChange,
+  onKeyDown,
 }: MainInputProps) {
   return (
     <div className={styles.container}>
@@ -33,6 +39,7 @@ export default function MainInput({
         value={value}
         disabled={disabled}
         onChange={onChange}
+        onKeyDown={onKeyDown}
       />
     </div>
   );
