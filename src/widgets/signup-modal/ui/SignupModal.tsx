@@ -210,16 +210,15 @@ export default function SignupModal({ onClose }: SingupModalProps) {
     }
   }, [email, authKey, name, password, phase]);
 
-  const handleKeyDownEmail: KeyboardEventHandler<HTMLInputElement> =
-    useCallback(
-      (e) => {
-        if (e.key === "Enter") {
-          handleClickNext();
-          console.log("aaa");
-        }
-      },
-      [handleClickNext]
-    );
+  const handleKeyDown: KeyboardEventHandler<HTMLInputElement> = useCallback(
+    (e) => {
+      if (e.key === "Enter") {
+        handleClickNext();
+        console.log("aaa");
+      }
+    },
+    [handleClickNext]
+  );
 
   return (
     <FullModal title="회원가입" onClose={onClose}>
@@ -241,7 +240,7 @@ export default function SignupModal({ onClose }: SingupModalProps) {
                   disabled={phase !== "email"}
                   onChange={handleChangeEmail}
                   maxLength={30}
-                  onKeyDown={handleKeyDownEmail}
+                  onKeyDown={handleKeyDown}
                   ref={emailInputRef}
                 />
               </div>
@@ -261,7 +260,7 @@ export default function SignupModal({ onClose }: SingupModalProps) {
                   maxLength={6}
                   disabled={phase !== "authCode"}
                   onChange={handleChangeAuthKey}
-                  onKeyDown={handleKeyDownEmail}
+                  onKeyDown={handleKeyDown}
                   ref={authCodeInputRef}
                 />
               </div>
@@ -282,7 +281,7 @@ export default function SignupModal({ onClose }: SingupModalProps) {
                   maxLength={6}
                   disabled={phase !== "extra"}
                   onChange={handleChangeName}
-                  onKeyDown={handleKeyDownEmail}
+                  onKeyDown={handleKeyDown}
                   ref={nameInputRef}
                 />
                 <div className={`${styles.hint} text-xs`}></div>
@@ -294,6 +293,7 @@ export default function SignupModal({ onClose }: SingupModalProps) {
                   maxLength={20}
                   disabled={phase !== "extra"}
                   onChange={handleChangePassword}
+                  onKeyDown={handleKeyDown}
                 />
                 <div
                   className={`${styles.hint} text-xs ${
@@ -310,6 +310,7 @@ export default function SignupModal({ onClose }: SingupModalProps) {
                   maxLength={20}
                   disabled={phase !== "extra"}
                   onChange={handleChangeConfirmPassword}
+                  onKeyDown={handleKeyDown}
                 />
                 <div
                   className={`${styles.hint} text-xs ${

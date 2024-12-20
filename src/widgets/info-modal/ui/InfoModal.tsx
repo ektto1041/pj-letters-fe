@@ -1,6 +1,12 @@
 import { FullModal } from "@/widgets/full-modal";
 import styles from "./InfoModal.module.css";
-import { ChangeEventHandler, useCallback, useMemo, useState } from "react";
+import {
+  ChangeEventHandler,
+  KeyboardEventHandler,
+  useCallback,
+  useMemo,
+  useState,
+} from "react";
 import LockImg from "@assets/lock.svg";
 import { MainButton, MainInput } from "@/shared";
 import { updatePassword, useUserState } from "@/features";
@@ -28,6 +34,10 @@ export default function InfoModal({ onClose }: InfoModalProps) {
     return password === confirmPassword;
   }, [confirmPassword, password]);
 
+  const canNext = useMemo(() => {
+    return isPasswordValid && isConfirmPasswordValid;
+  }, [isPasswordValid, isConfirmPasswordValid]);
+
   const handleChangePassword: ChangeEventHandler<HTMLInputElement> =
     useCallback((e) => {
       setPassword(e.target.value);
@@ -39,6 +49,7 @@ export default function InfoModal({ onClose }: InfoModalProps) {
     }, []);
 
   const handleClickNext = useCallback(async () => {
+    if (!canNext) return;
     setLoading(true);
 
     try {
@@ -66,7 +77,16 @@ export default function InfoModal({ onClose }: InfoModalProps) {
     } finally {
       setLoading(false);
     }
-  }, [password, setUserNull]);
+  }, [password, setUserNull, canNext]);
+
+  const handleKeyDown: KeyboardEventHandler<HTMLInputElement> = useCallback(
+    (e) => {
+      if (e.key === "Enter") {
+        handleClickNext();
+      }
+    },
+    [handleClickNext]
+  );
 
   return (
     <FullModal title="비밀번호 변경" onClose={onClose}>
@@ -84,6 +104,7 @@ export default function InfoModal({ onClose }: InfoModalProps) {
             disabled={isLoading}
             onChange={handleChangePassword}
             autoFocus
+            onKeyDown={handleKeyDown}
           />
           <div
             className={`${styles.hint} text-xs ${
@@ -100,6 +121,7 @@ export default function InfoModal({ onClose }: InfoModalProps) {
             maxLength={20}
             disabled={isLoading}
             onChange={handleChangeConfirmPassword}
+            onKeyDown={handleKeyDown}
           />
           <div
             className={`${styles.hint} text-xs ${
@@ -115,7 +137,7 @@ export default function InfoModal({ onClose }: InfoModalProps) {
           <MainButton
             color="primary"
             onClick={handleClickNext}
-            disabled={!(isPasswordValid && isConfirmPasswordValid)}
+            disabled={!canNext}
           >
             확인
           </MainButton>

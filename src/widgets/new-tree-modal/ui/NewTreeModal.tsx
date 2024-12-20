@@ -1,7 +1,13 @@
 import { FullModal } from "@/widgets/full-modal";
 import styles from "./NewTreeModal.module.css";
 import { MainButton, MainInput, Spinner } from "@/shared";
-import { ChangeEventHandler, useCallback, useMemo, useState } from "react";
+import {
+  ChangeEventHandler,
+  KeyboardEventHandler,
+  useCallback,
+  useMemo,
+  useState,
+} from "react";
 import XmasTreeImg from "@assets/xmas-tree.png";
 import { createTree, updateTreeName } from "@/features";
 import { SimpleDialog, SimpleDialogProps } from "@/widgets/simple-dialog";
@@ -31,6 +37,7 @@ export default function NewTreeModal({ isUpdate, onClose }: NewTreeModalProps) {
 
   const handleClickUpdate = useCallback(async () => {
     if (!userId) return;
+    if (!isTreeNameValid) return;
 
     setLoading(true);
 
@@ -51,9 +58,11 @@ export default function NewTreeModal({ isUpdate, onClose }: NewTreeModalProps) {
     } finally {
       setLoading(false);
     }
-  }, [userId, treeName]);
+  }, [userId, treeName, isTreeNameValid]);
 
   const handleClickSubmit = useCallback(async () => {
+    if (!isTreeNameValid) return;
+
     setLoading(true);
 
     try {
@@ -75,6 +84,17 @@ export default function NewTreeModal({ isUpdate, onClose }: NewTreeModalProps) {
     }
   }, [treeName]);
 
+  const handleKeyDown: KeyboardEventHandler<HTMLInputElement> = useCallback(
+    (e) => {
+      if (e.key === "Enter") {
+        if (isUpdate) {
+          handleClickUpdate();
+        } else handleClickSubmit();
+      }
+    },
+    [isUpdate, handleClickUpdate, handleClickSubmit]
+  );
+
   return (
     <FullModal
       title={isUpdate ? "트리 이름 수정" : "나의 트리 생성"}
@@ -93,6 +113,7 @@ export default function NewTreeModal({ isUpdate, onClose }: NewTreeModalProps) {
             maxLength={12}
             onChange={handleChangeTreeName}
             autoFocus
+            onKeyDown={handleKeyDown}
           />
           <div
             className={`${styles.hint} text-xs ${
