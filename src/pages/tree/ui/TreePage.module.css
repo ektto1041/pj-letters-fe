@@ -212,3 +212,8 @@
   top: 250px;
   left: 170px;
 }
+
+.hide {
+  width: 0;
+  height: 0;
+}

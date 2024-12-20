@@ -9,7 +9,14 @@ import {
 } from "@/widgets";
 import TreeImg from "@assets/tree.svg";
 import { MainButton, Spinner, TextButton } from "@/shared";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import {
+  ChangeEventHandler,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import {
   cardGrayImgs,
   cardImgs,
@@ -79,6 +86,8 @@ export default function TreePage() {
   const [isUpdateTreeModalOpen, setUpdateTreeModalOpen] = useState(false);
   const [dialog, setDialog] = useState<SimpleDialogProps | null>(null);
   const [isLoading, setLoading] = useState(false);
+
+  const imageInputRef = useRef<HTMLInputElement>(null);
 
   const hasNextPage = useMemo(() => {
     const lettersCount = letters.length;
@@ -245,12 +254,12 @@ export default function TreePage() {
   }, []);
 
   const handleClickProfileImg = useCallback(() => {
-    const input = document.createElement("input");
-    input.setAttribute("type", "file");
-    input.setAttribute("accept", "image/*");
-    input.click();
-    input.onchange = async () => {
-      console.log(input.files);
+    imageInputRef.current?.click();
+  }, []);
+
+  const handleChangeProfileImg: ChangeEventHandler<HTMLInputElement> =
+    useCallback(async (e) => {
+      const input = e.target;
       if (input.files) {
         const file = input.files[0];
 
@@ -293,8 +302,7 @@ export default function TreePage() {
           }
         }
       }
-    };
-  }, []);
+    }, []);
 
   const handleClickLogout = useCallback(() => {
     setDialog({
@@ -399,6 +407,14 @@ export default function TreePage() {
           )}
         </div>
       </div>
+
+      <input
+        ref={imageInputRef}
+        className={styles.hide}
+        type="file"
+        accept="image/*"
+        onChange={handleChangeProfileImg}
+      />
 
       {dialog && (
         <SimpleDialog
