@@ -16,6 +16,7 @@ interface MainInputProps {
   disabled?: boolean;
   onChange: ChangeEventHandler<HTMLInputElement>;
   onKeyDown?: KeyboardEventHandler<HTMLInputElement>;
+  autoFocus?: boolean;
 }
 export const MainInput = forwardRef(
   (
@@ -28,6 +29,7 @@ export const MainInput = forwardRef(
       disabled,
       onChange,
       onKeyDown,
+      autoFocus,
     }: MainInputProps,
     ref: ForwardedRef<HTMLInputElement>
   ) => {
@@ -46,6 +48,7 @@ export const MainInput = forwardRef(
           disabled={disabled}
           onChange={onChange}
           onKeyDown={onKeyDown}
+          autoFocus={autoFocus}
         />
       </div>
     );

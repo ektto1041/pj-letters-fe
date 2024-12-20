@@ -1,6 +1,14 @@
 import { MainButton, MainInput, Spinner } from "@/shared";
 import styles from "./SignupModal.module.css";
-import { ChangeEventHandler, useCallback, useMemo, useState } from "react";
+import {
+  ChangeEventHandler,
+  KeyboardEventHandler,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { FullModal } from "@/widgets/full-modal";
 import EmailImg from "@assets/email.svg";
 import KeyImg from "@assets/key.svg";
@@ -35,6 +43,10 @@ export default function SignupModal({ onClose }: SingupModalProps) {
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+
+  const emailInputRef = useRef<HTMLInputElement>(null);
+  const authCodeInputRef = useRef<HTMLInputElement>(null);
+  const nameInputRef = useRef<HTMLInputElement>(null);
 
   const isEmailValid = useMemo(() => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -98,7 +110,18 @@ export default function SignupModal({ onClose }: SingupModalProps) {
       setConfirmPassword(e.target.value);
     }, []);
 
+  useEffect(() => {
+    if (phase === "email") {
+      emailInputRef.current?.focus({ preventScroll: true });
+    } else if (phase === "authCode") {
+      authCodeInputRef.current?.focus({ preventScroll: true });
+    } else if (phase === "extra") {
+      nameInputRef.current?.focus({ preventScroll: true });
+    }
+  }, [phase]);
+
   const handleClickNext = useCallback(async () => {
+    if (!canNext) return;
     if (phase === "email") {
       setPhase("checkingEmail");
       setLoading(true);
@@ -142,6 +165,7 @@ export default function SignupModal({ onClose }: SingupModalProps) {
           onClickPositive: () => {
             setPhase("authCode");
             setDialog(null);
+            authCodeInputRef.current?.focus();
           },
         });
       } finally {
@@ -186,6 +210,17 @@ export default function SignupModal({ onClose }: SingupModalProps) {
     }
   }, [email, authKey, name, password, phase]);
 
+  const handleKeyDownEmail: KeyboardEventHandler<HTMLInputElement> =
+    useCallback(
+      (e) => {
+        if (e.key === "Enter") {
+          handleClickNext();
+          console.log("aaa");
+        }
+      },
+      [handleClickNext]
+    );
+
   return (
     <FullModal title="회원가입" onClose={onClose}>
       <div className={styles.container}>
@@ -206,6 +241,8 @@ export default function SignupModal({ onClose }: SingupModalProps) {
                   disabled={phase !== "email"}
                   onChange={handleChangeEmail}
                   maxLength={30}
+                  onKeyDown={handleKeyDownEmail}
+                  ref={emailInputRef}
                 />
               </div>
             </div>
@@ -224,6 +261,8 @@ export default function SignupModal({ onClose }: SingupModalProps) {
                   maxLength={6}
                   disabled={phase !== "authCode"}
                   onChange={handleChangeAuthKey}
+                  onKeyDown={handleKeyDownEmail}
+                  ref={authCodeInputRef}
                 />
               </div>
             </div>
@@ -243,6 +282,8 @@ export default function SignupModal({ onClose }: SingupModalProps) {
                   maxLength={6}
                   disabled={phase !== "extra"}
                   onChange={handleChangeName}
+                  onKeyDown={handleKeyDownEmail}
+                  ref={nameInputRef}
                 />
                 <div className={`${styles.hint} text-xs`}></div>
                 <MainInput

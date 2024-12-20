@@ -83,6 +83,7 @@ export default function InfoModal({ onClose }: InfoModalProps) {
             maxLength={20}
             disabled={isLoading}
             onChange={handleChangePassword}
+            autoFocus
           />
           <div
             className={`${styles.hint} text-xs ${

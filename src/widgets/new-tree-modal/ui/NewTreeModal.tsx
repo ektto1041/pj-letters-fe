@@ -92,6 +92,7 @@ export default function NewTreeModal({ isUpdate, onClose }: NewTreeModalProps) {
             value={treeName}
             maxLength={12}
             onChange={handleChangeTreeName}
+            autoFocus
           />
           <div
             className={`${styles.hint} text-xs ${
