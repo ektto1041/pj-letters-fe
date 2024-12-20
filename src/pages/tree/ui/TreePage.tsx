@@ -250,6 +250,7 @@ export default function TreePage() {
     input.setAttribute("accept", "image/*");
     input.click();
     input.onchange = async () => {
+      console.log(input.files);
       if (input.files) {
         const file = input.files[0];
 
