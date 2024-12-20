@@ -33,6 +33,7 @@ export default function SimpleDialog({
           <button
             className={`${styles.positive} text-md`}
             onClick={onClickPositive}
+            autoFocus
           >
             {positiveLabel}
           </button>
