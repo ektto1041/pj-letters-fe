@@ -1,14 +1,19 @@
-import { lazy, Suspense } from "react";
+import { Suspense } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import App from "../App";
 import LoadingPage from "@/pages/loading";
 import { NotFoundPage } from "@/pages/not-found";
+import IntroPage from "@/pages/intro";
+import TreePage from "@/pages/tree";
+import FriendList from "@/pages/friend-list";
+import NewCardPage from "@/pages/new-card";
+import CardPage from "@/pages/card";
 
-const IntroPage = lazy(() => import("@pages/intro"));
-const TreePage = lazy(() => import("@pages/tree"));
-const FriendListPage = lazy(() => import("@pages/friend-list"));
-const NewCardPage = lazy(() => import("@pages/new-card"));
-const CardPage = lazy(() => import("@pages/card"));
+// const IntroPage = lazy(() => import("@pages/intro"));
+// const TreePage = lazy(() => import("@pages/tree"));
+// const FriendListPage = lazy(() => import("@pages/friend-list"));
+// const NewCardPage = lazy(() => import("@pages/new-card"));
+// const CardPage = lazy(() => import("@pages/card"));
 
 const router = createBrowserRouter([
   {
@@ -26,7 +31,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/friend-list",
-        element: <FriendListPage />,
+        element: <FriendList />,
       },
       {
         path: "/new-card/:userId/:treeId",
