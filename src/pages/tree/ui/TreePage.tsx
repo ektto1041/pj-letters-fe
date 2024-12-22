@@ -40,7 +40,7 @@ type Time = {
 };
 
 const calcTime: () => Time = () => {
-  const christmasDay = new Date("2024-12-25T00:00:00");
+  const christmasDay = new Date("2024-12-24T15:00:00");
 
   const now = new Date();
   const difference = christmasDay.getTime() - now.getTime();
@@ -101,7 +101,7 @@ export default function TreePage() {
   }, [timeLeft]);
 
   const setTimer = () => {
-    const christmasDay = new Date("2024-12-25T00:00:00");
+    const christmasDay = new Date("2024-12-24T15:00:00");
 
     const timer = setInterval(() => {
       const now = new Date();

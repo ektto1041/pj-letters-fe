@@ -17,7 +17,7 @@ export default function CardPage() {
   const letterRef = useRef<HTMLDivElement>(null);
 
   const getLetter = useCallback(async (letterId: string) => {
-    const christmasDay = new Date("2024-12-25T00:00:00");
+    const christmasDay = new Date("2024-12-24T15:00:00");
 
     const now = new Date();
     const difference = christmasDay.getTime() - now.getTime();
