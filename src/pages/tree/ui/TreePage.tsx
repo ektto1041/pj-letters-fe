@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import styles from "./TreePage.module.css";
 import {
   Header,
@@ -61,6 +61,7 @@ const calcTime: () => Time = () => {
 
 export default function TreePage() {
   const { userId } = useParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
   const { user, setUserNull } = useUserState();
 
@@ -80,7 +81,6 @@ export default function TreePage() {
 
   const [tree, setTree] = useState<Tree | null>(null);
   const [letters, setLetters] = useState<LetterInTree[]>([]);
-  const [page, setPage] = useState(0);
   const [isMyInfoModalOpen, setMyInfoModalOpen] = useState(false);
   const [isNewTreeModalOpen, setNewTreeModalOpen] = useState(false);
   const [isUpdateTreeModalOpen, setUpdateTreeModalOpen] = useState(false);
@@ -88,6 +88,21 @@ export default function TreePage() {
   const [isLoading, setLoading] = useState(false);
 
   const imageInputRef = useRef<HTMLInputElement>(null);
+
+  const maxPage = useMemo(() => {
+    const tmpPage = Math.floor(letters.length / 5);
+    return letters.length % 5 === 0 ? tmpPage - 1 : tmpPage;
+  }, [letters]);
+
+  const page = useMemo(() => {
+    const p = searchParams.get("p");
+    if (p) {
+      const pInt = parseInt(p);
+      return pInt < 0 ? 0 : pInt > maxPage ? maxPage : pInt;
+    } else {
+      return 0;
+    }
+  }, [searchParams, maxPage]);
 
   const hasNextPage = useMemo(() => {
     const lettersCount = letters.length;
@@ -189,12 +204,12 @@ export default function TreePage() {
   }, [getLetters]);
 
   const handleClickNextPage = useCallback(() => {
-    setPage(page + 1);
-  }, [page]);
+    setSearchParams({ p: String(page + 1) });
+  }, [page, setSearchParams]);
 
   const handleClickPrevPage = useCallback(() => {
-    setPage(page - 1);
-  }, [page]);
+    setSearchParams({ p: String(page - 1) });
+  }, [page, setSearchParams]);
 
   const handleClickFriendList = useCallback(() => {
     navigate("/friend-list");
