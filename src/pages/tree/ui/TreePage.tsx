@@ -172,7 +172,7 @@ export default function TreePage() {
           message: "트리 정보를 가져올 수 없습니다.",
           positiveLabel: "확인",
           onClickPositive: () => {
-            navigate("/");
+            navigate(-1);
           },
         });
       }
@@ -368,6 +368,8 @@ export default function TreePage() {
           )}
         </div>
         <div className={styles["img-wrapper"]}>
+          {isXmas && <div className={styles.glow} />}
+
           <img src={TreeImg} alt="tree" />
           {letters.slice(5 * page, 5 * page + 5).map((letter, i) => (
             <div
