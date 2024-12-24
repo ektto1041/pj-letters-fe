@@ -88,7 +88,7 @@ export default function CardPage() {
   }, []);
 
   return (
-    <LetterBase onClose={handleClose} refs={letterRef}>
+    <LetterBase onClose={handleClose}>
       {letter !== null && (
         <>
           <div className={styles["sticker-wrapper"]}>
@@ -123,6 +123,34 @@ export default function CardPage() {
         />
       )}
       {isLoading && <Spinner />}
+      <div className={styles["capture-wrapper"]} ref={letterRef}>
+        <div className={styles["capture-container"]}>
+          <div className={styles["capture-content"]}>
+            {letter !== null && (
+              <>
+                <div className={styles["sticker-wrapper"]}>
+                  <img
+                    src={cardImgs[letter.sticker]}
+                    alt="Sticker"
+                    crossOrigin="anonymous"
+                  />
+                </div>
+                <div className={`${styles.title} header-h4`}>
+                  {letter.title}
+                </div>
+                <div className={styles["editor-wrapper"]}>
+                  <Editor defaultContent={letter.content} editable={false} />
+                </div>
+                <div className={styles["writer-wrapper"]}>
+                  <div className={`${styles.nickname} text-md`}>
+                    from {letter.nickname}
+                  </div>
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+      </div>
     </LetterBase>
   );
 }
